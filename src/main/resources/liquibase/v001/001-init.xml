@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+
+    <changeSet author="bergen" id="create-table-black-list">
+        <sql endDelimiter=";;" splitStatements="true"> <![CDATA[
+      CREATE TABLE blacklist
+      (
+        ctn             VARCHAR(10),
+        event_time      timestamp
+      );;
+      ]]></sql>
+    </changeSet>
+
+    <changeSet author="bergen" id="create-index-black-list-target_ctn">
+        <sql endDelimiter=";;" splitStatements="true"> <![CDATA[
+      create index index_ctn on blacklist(ctn);;
+      ]]></sql>
+    </changeSet>
+
+    <changeSet author="bergen" id="black-list-comments">
+        <sql endDelimiter=";;" splitStatements="true"> <![CDATA[
+       comment on table blacklist --
+        is 'Черный список заемщиков';;
+       comment on column blacklist.ctn is 'Номер телефона заемщика';;
+       comment on column blacklist.event_time is 'Скорее всего время, когда заемщик был занесен в чс';;
+      ]]></sql>
+    </changeSet>
+
+    <changeSet author="bergen" id="create-table-logs">
+        <sql endDelimiter=";;" splitStatements="true"> <![CDATA[
+
+        CREATE SEQUENCE table_logs_id_seq;;
+
+        CREATE TABLE logs
+      (
+        id             INTEGER NOT NULL DEFAULT NEXTVAL('table_logs_id_seq'),
+        ctn            VARCHAR(10),
+        result         VARCHAR(64),
+        log_timestamp  timestamp
+      );;
+      ]]></sql>
+    </changeSet>
+
+</databaseChangeLog>

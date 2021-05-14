@@ -1,0 +1,45 @@
+version: "2.3"
+services:
+
+  postgres:
+    image: postgres:12.0
+    mem_limit: 200M
+    container_name: postgres_web
+    restart: always
+    ports:
+      - "1026:5432"
+    volumes:
+      - ./volumes/postgres:/var/lib/postgresql/data
+      - ./postgres-init:/docker-entrypoint-initdb.d
+
+  zookeeper:
+    image: wurstmeister/zookeeper
+    restart: always
+    volumes:
+      - "./volumes/zookeeper/data:/var/lib/zookeeper/data"
+      - "./volumes/zookeeper/log:/var/lib/zookeeper/log"
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: wurstmeister/kafka
+    restart: always
+    ports:
+      - "9092:9092"
+    volumes:
+      - "./volumes/kafka:/kafka"
+      - "./volumes/kafka_logs:/opt/kafka/logs"
+      - "./volumes/kafka_tmp_logs:/tmp/kafka-logs"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop:3.28.0-SNAPSHOT
+    ports:
+      - "9003:9003"                                              # KAFDROP   http://localhost:9003
+    environment:
+      KAFKA_BROKERCONNECT: "kafka:9092"
+      SERVER_PORT: "9003"
+      JVM_OPTS: "-Xms32M -Xmx164M"
+      SERVER_SERVLET_CONTEXTPATH: "/"
