@@ -13,4 +13,9 @@ public class SparkRegisterImpl implements SparkRegister {
 
   }
 
+  public static void main(String[] args) {
+
+
+  }
+
 }

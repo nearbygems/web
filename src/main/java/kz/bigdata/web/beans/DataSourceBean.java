@@ -2,7 +2,7 @@ package kz.bigdata.web.beans;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import kz.bigdata.web.config.DbConfig;
+import kz.bigdata.web.config.PostgresConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -13,15 +13,15 @@ import javax.sql.DataSource;
 public class DataSourceBean {
 
   @Autowired
-  private DbConfig dbConfig;
+  private PostgresConfig postgresConfig;
 
   @Bean
   public DataSource dataSource() {
     var config = new HikariConfig();
     config.setDriverClassName("org.postgresql.Driver");
-    config.setJdbcUrl("jdbc:postgresql://" + dbConfig.host() + ":" + dbConfig.port() + "/" + dbConfig.dbName());
-    config.setUsername(dbConfig.username());
-    config.setPassword(dbConfig.password());
+    config.setJdbcUrl("jdbc:postgresql://" + postgresConfig.host() + ":" + postgresConfig.port() + "/" + postgresConfig.dbName());
+    config.setUsername(postgresConfig.username());
+    config.setPassword(postgresConfig.password());
     return new HikariDataSource(config);
   }
 

@@ -5,14 +5,14 @@ import kz.greetgo.conf.hot.DefaultStrValue;
 import kz.greetgo.conf.hot.Description;
 
 @Description("Параметры базы данных")
-public interface DbConfig {
+public interface PostgresConfig {
 
   @Description("Хост")
-  @DefaultStrValue("localhost")
+  @DefaultStrValue("postgres")
   String host();
 
   @Description("Порт")
-  @DefaultIntValue(1026)
+  @DefaultIntValue(5432)
   int port();
 
   @Description("Наименование БД")
