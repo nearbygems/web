@@ -9,6 +9,40 @@
     <changeSet author="bergen" id="create-table-smartphones">
         <sql endDelimiter=";;" splitStatements="true"> <![CDATA[
 
+        create sequence table_smartphones_id_seq;;
+
+        create table smartphones
+
+        (
+
+        id              integer         not null default nextval('table_smartphones_id_seq'),
+        brand           varchar(100)    not null,
+        model           varchar(100)    not null,
+        price           integer         not null,
+
+        primary key (id)
+
+        );;
+
+      ]]></sql>
+    </changeSet>
+
+    <changeSet author="bergen" id="smartphones-comments">
+        <sql endDelimiter=";;" splitStatements="true"> <![CDATA[
+
+        comment on table smartphones --
+        is 'Смартфоны из spark';;
+
+        comment on column smartphones.brand is 'Брэнд смартфона';;
+        comment on column smartphones.model is 'Модель смартфона';;
+        comment on column smartphones.price is 'Цена смартфона';;
+
+      ]]></sql>
+    </changeSet>
+
+    <changeSet author="bergen" id="create-table-smartphones-v2">
+        <sql endDelimiter=";;" splitStatements="true"> <![CDATA[
+
         create sequence table_smartphones_v2_id_seq;;
 
         create table smartphones_v2
@@ -29,7 +63,7 @@
       ]]></sql>
     </changeSet>
 
-    <changeSet author="bergen" id="smartphones-comments">
+    <changeSet author="bergen" id="smartphones-v2-comments">
         <sql endDelimiter=";;" splitStatements="true"> <![CDATA[
 
         comment on table smartphones_v2 --
