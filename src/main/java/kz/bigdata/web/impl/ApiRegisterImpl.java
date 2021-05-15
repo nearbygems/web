@@ -3,12 +3,13 @@ package kz.bigdata.web.impl;
 import kz.bigdata.web.dao.model.BorrowerDao;
 import kz.bigdata.web.dao.model.SmartphoneDao;
 import kz.bigdata.web.model.mongo.SmartphoneDto;
-import kz.bigdata.web.model.web.Borrower;
-import kz.bigdata.web.model.web.Smartphone;
+import kz.bigdata.web.model.web.*;
 import kz.bigdata.web.register.ApiRegister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,8 +25,22 @@ public class ApiRegisterImpl implements ApiRegister {
   // endregion
 
   @Override
-  public String getResult() {
-    return null;
+  public Result getResult(Client client) {
+
+    var borrower = borrowerDao.loadByCtn(client.ctn);
+
+    if (borrower != null) {
+      return Rejection.of(ReasonType.BLACKLIST);
+    }
+
+    var payment = BigDecimal.valueOf(smartphoneDao.priceById(client.smartphoneId))
+      .divide(BigDecimal.valueOf(12), 2, RoundingMode.HALF_UP);
+
+    if (payment.compareTo(BigDecimal.valueOf(client.income).multiply(BigDecimal.valueOf(0.2))) >= 0) {
+      return Rejection.of(ReasonType.LOW_INCOME);
+    }
+
+    return Result.approved();
   }
 
   @Override

@@ -25,4 +25,9 @@ public interface SmartphoneDao {
   )
   List<SmartphoneDto> load();
 
+  @Select(
+    "SELECT price FROM smartphones WHERE id = #{id}"
+  )
+  int priceById(@Param("id") int id);
+
 }

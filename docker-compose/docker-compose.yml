@@ -1,4 +1,10 @@
 version: "2.3"
+
+networks:
+  default:
+    external:
+      name: web
+
 services:
 
   postgres:
@@ -7,7 +13,7 @@ services:
     container_name: postgres_web
     restart: always
     ports:
-      - "1026:5432"
+      - "5432:5432"
     volumes:
       - ./volumes/postgres:/var/lib/postgresql/data
       - ./postgres-init:/docker-entrypoint-initdb.d
@@ -57,5 +63,22 @@ services:
       - "./volumes/kafka_logs:/opt/kafka/logs"
       - "./volumes/kafka_tmp_logs:/tmp/kafka-logs"
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      #      KAFKA_ADVERTISED_HOST_NAME: localhost
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
+  hadoop:
+    image: teivah/hadoop:2.9.2
+    container_name: hadoop_web
+    ports:
+      - '50070:50070'
+      - '9000:9000'
+      - '50075:50075'
+      - '50010:50010'
+
+  bergen-web:
+    image: docker.io/library/web:7.7.7
+    container_name: bergen_web
+    restart: always
+    ports:
+      - "8080:8080"

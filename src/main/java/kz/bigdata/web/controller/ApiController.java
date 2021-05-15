@@ -1,13 +1,12 @@
 package kz.bigdata.web.controller;
 
 import kz.bigdata.web.model.web.Borrower;
+import kz.bigdata.web.model.web.Client;
+import kz.bigdata.web.model.web.Result;
 import kz.bigdata.web.model.web.Smartphone;
 import kz.bigdata.web.register.ApiRegister;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,9 +21,10 @@ public class ApiController {
     this.apiRegister = apiRegister;
   }
 
-  @PostMapping("/result")
-  public String getResult() {
-    return apiRegister.getResult();
+  @PostMapping("/get-result")
+  public Result getResult(@RequestBody Client client) {
+
+    return apiRegister.getResult(client);
   }
 
   @PostMapping("/borrower")

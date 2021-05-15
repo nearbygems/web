@@ -4,6 +4,8 @@ cd "$(dirname "$0")"
 
 docker-compose down
 
+docker network create web
+
 docker run --rm -i \
   -v "$PWD/volumes:/volumes" \
   busybox:1.31.0 \
