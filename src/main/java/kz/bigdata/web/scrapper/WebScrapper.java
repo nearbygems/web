@@ -1,70 +1,85 @@
 package kz.bigdata.web.scrapper;
 
+import kz.bigdata.web.config.AppConfig;
+import kz.bigdata.web.model.mongo.SmartphoneDto;
+import kz.bigdata.web.util.Ids;
+import kz.bigdata.web.util.ScrapperUtil;
+import lombok.SneakyThrows;
 import org.jsoup.Jsoup;
-import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.util.ArrayDeque;
-import java.util.Comparator;
-import java.util.Queue;
 
 @Component
 public class WebScrapper {
 
-  private static final String URL = "https://alfa.kz/phones/telefony-i-smartfony";
-  private static final String PREFIX = "https://alfa.kz";
+  // region Autowired fields
+  @Autowired
+  private AppConfig appConfig;
+  // endregion
 
-  private final Queue<String> pages = new ArrayDeque<>();
+  @SneakyThrows
+  public void parseWebSites() {
 
-  public void parseWebSites() throws IOException {
+    var body = Jsoup.connect(appConfig.urlToParse())
+      .timeout(1000000)
+      .get()
+      .body();
 
-    var doc = Jsoup.connect(URL).timeout(10 * 1000).get();
+    var pagesUrl = ScrapperUtil.pagesUrl(body);
 
-    var links = doc.select("a[href]");
+    var pagesCount = ScrapperUtil.pagesCount(body);
 
-    var pageUrl = pagesUrl(links);
-
-    var pagesCount = pagesCount(links);
-
-    System.out.println(pageUrl);
-
-    System.out.println(pagesCount);
-
-    for (var i = 0; i <= pagesCount; i++) {
-      System.out.println(PREFIX + pageUrl.replaceAll("[0-9]", String.valueOf(i)));
+    for (var i = 0; i < pagesCount; i++) {
+      var url = appConfig.websiteToParse() + pagesUrl.replaceAll("#", "/page" + i + "#");
+      parsePage(url);
     }
 
   }
 
-  private String pagesUrl(Elements links) {
-    return links.stream()
-      .filter(link -> link.attr("href").contains("page"))
-      .map(link -> link.attr("href"))
-      .findAny()
-      .orElse("");
+  @SneakyThrows
+  private void parsePage(String url) {
+
+    var page = Jsoup.connect(url).timeout(1000000).get();
+
+    var products = page.body().getElementById("products");
+
+    for (var product : products.getElementsByClass("title")) {
+
+      for (var link : product.getElementsByAttribute("href")) {
+
+        if (!link.attr("href").contains("wishlist")) {
+
+          var smartphonePage = link.attr("href");
+
+          var smartphone = parseSmartphonePage(smartphonePage);
+
+        }
+
+      }
+
+    }
+
   }
 
-  private int pagesCount(Elements links) {
-    return links.stream()
-      .filter(link -> link.attr("href").contains("page"))
-      .map(link -> link.val("a").text())
-      .filter(this::isNumeric)
-      .map(Integer::parseInt)
-      .max(Comparator.comparingInt(Integer::intValue))
-      .orElse(0);
-  }
+  @SneakyThrows
+  private SmartphoneDto parseSmartphonePage(String url) {
 
-  private boolean isNumeric(String str) {
-    if (str == null) {
-      return false;
-    }
-    try {
-      var i = Integer.parseInt(str);
-    } catch (NumberFormatException e) {
-      return false;
-    }
-    return true;
+    var page = Jsoup.connect(url).timeout(1000000).get();
+
+    var body = page.body().getElementById("product-body");
+
+    var info = body.getElementById("additional-info");
+
+    var ret = new SmartphoneDto();
+    ret.id = Ids.generate();
+    ret.title = ScrapperUtil.getTitle(body);
+    ret.price = ScrapperUtil.getPrice(body);
+    ret.seller = ScrapperUtil.getSeller(body);
+    ret.ram = ScrapperUtil.getRam(info);
+    ret.memory = ScrapperUtil.getMemory(info);
+
+    return ret;
+
   }
 
 }

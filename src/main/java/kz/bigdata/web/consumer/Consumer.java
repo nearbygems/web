@@ -2,7 +2,7 @@ package kz.bigdata.web.consumer;
 
 import kz.bigdata.web.config.AppConfig;
 import kz.bigdata.web.register.KafkaRegister;
-import kz.bigdata.web.util.Ids;
+import kz.bigdata.web.util.App;
 import kz.bigdata.web.util.KafkaTopic;
 import kz.bigdata.web.util.KafkaUtil;
 import lombok.SneakyThrows;
@@ -37,7 +37,7 @@ public class Consumer {
   @SneakyThrows
   @KafkaListener(topics = KafkaTopic.BLACKLIST_CSV, groupId = KafkaUtil.GROUP_ID)
   public void listenBlackListCsv(byte[] message) {
-    var fileName = appConfig.blacklistCsvDir() + "blacklist_" + Ids.generateStr() + "_" + LocalDateTime.now() + ".csv";
+    var fileName = App.appDir() + appConfig.blacklistCsvDir() + "data_" + LocalDateTime.now() + ".csv";
     try (var fos = new FileOutputStream(fileName)) {
       fos.write(message);
     } catch (Exception e) {

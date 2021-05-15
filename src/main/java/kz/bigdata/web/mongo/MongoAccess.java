@@ -2,7 +2,7 @@ package kz.bigdata.web.mongo;
 
 import com.mongodb.client.MongoCollection;
 import kz.bigdata.web.model.mongo.BorrowerDto;
-import kz.bigdata.web.model.mongo.SmartPhoneDto;
+import kz.bigdata.web.model.mongo.SmartphoneDto;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,13 +15,13 @@ public class MongoAccess implements InitializingBean {
   private MongoConnection mongoConnection;
   // endregion
 
-  private MongoCollection<SmartPhoneDto> phones;
+  private MongoCollection<SmartphoneDto> phones;
   private MongoCollection<BorrowerDto> blacklist;
 
   @Override
   public void afterPropertiesSet() {
 
-    phones = getCollection(SmartPhoneDto.class);
+    phones = getCollection(SmartphoneDto.class);
     blacklist = getCollection(BorrowerDto.class);
 
   }
@@ -30,7 +30,7 @@ public class MongoAccess implements InitializingBean {
     return mongoConnection.database().getCollection(aClass.getSimpleName(), aClass);
   }
 
-  public MongoCollection<SmartPhoneDto> phones() {
+  public MongoCollection<SmartphoneDto> phones() {
     return phones;
   }
 

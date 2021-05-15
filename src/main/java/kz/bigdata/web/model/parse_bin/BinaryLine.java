@@ -1,9 +1,9 @@
 package kz.bigdata.web.model.parse_bin;
 
+import lombok.SneakyThrows;
 import lombok.ToString;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
@@ -21,7 +21,8 @@ public class BinaryLine {
   public int min;
   public int sec;
 
-  public static BinaryLine ofStream(FileInputStream input) throws IOException {
+  @SneakyThrows
+  public static BinaryLine ofStream(FileInputStream input) {
     var reader = new BinaryLine();
 
     var order = new byte[4];
@@ -63,7 +64,7 @@ public class BinaryLine {
     var ret = new BlackListRow();
     ret.order = order;
     ret.phone = phone;
-    ret.time = LocalDateTime.of(year, month, day, hour, min, sec);
+    ret.eventTime = LocalDateTime.of(year, month, day, hour, min, sec);
     return ret;
   }
 

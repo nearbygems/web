@@ -7,23 +7,27 @@ import kz.greetgo.conf.hot.Description;
 public interface AppConfig {
 
   @Description("Директория для бинарных файлов")
-  @DefaultStrValue("src/main/resources/blacklist/new/")
+  @DefaultStrValue("/blacklist/new/")
   String binNewDir();
 
   @Description("Директория для бинарных файлов")
-  @DefaultStrValue("src/main/resources/blacklist/csv/")
+  @DefaultStrValue("/blacklist/csv/")
   String blacklistCsvDir();
 
   @Description("Директория для бинарных файлов")
-  @DefaultStrValue("src/main/resources/blacklist/csv/")
+  @DefaultStrValue("/smartphones/csv/")
   String smartphonesCsvDir();
 
   @Description("Директория для csv файлов")
-  @DefaultStrValue("src/main/resources/blacklist/migrated/")
+  @DefaultStrValue("/blacklist/migrated/")
   String binMigratedDir();
 
-  @Description("Наименования столбцов бинарных файлов")
-  @DefaultStrValue("Номер, Номер телефона, Время события")
-  String blackListHeader();
+  @Description("Страница для парсинга")
+  @DefaultStrValue("https://alfa.kz/phones/telefony-i-smartfony")
+  String urlToParse();
+
+  @Description("Сайт для парсинга")
+  @DefaultStrValue("https://alfa.kz")
+  String websiteToParse();
 
 }

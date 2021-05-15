@@ -14,7 +14,7 @@ public class Borrower {
   public LocalDateTime eventTime;
 
   public static Borrower valueFromCsvRow(String row) {
-    var values = row.trim().split(",");
+    var values = row.trim().split(";");
     if (values.length != 3) {
       return null;
     }

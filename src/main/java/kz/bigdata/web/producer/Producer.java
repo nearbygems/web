@@ -27,7 +27,7 @@ public class Producer {
     send(KafkaTopic.BLACKLIST, message.getBytes(StandardCharsets.UTF_8));
   }
 
-  public void sendToSmartPhones(String message) {
+  public void sendToSmartphones(String message) {
     send(KafkaTopic.SMARTPHONES, message.getBytes(StandardCharsets.UTF_8));
   }
 
@@ -37,7 +37,7 @@ public class Producer {
   }
 
   @SneakyThrows
-  public void sendToSmartPhones(File file) {
+  public void sendToSmartphones(File file) {
     send(KafkaTopic.SMARTPHONES_CSV, Files.readAllBytes(file.toPath()));
   }
 

@@ -5,13 +5,13 @@ import kz.bigdata.web.model.parse_bin.BinaryLine;
 import kz.bigdata.web.model.parse_bin.BlackListRow;
 import kz.bigdata.web.producer.Producer;
 import kz.bigdata.web.register.BlackListRegister;
+import kz.bigdata.web.util.App;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -34,9 +34,13 @@ public class BlackListRegisterImpl implements BlackListRegister {
   @SneakyThrows
   public void parseBinaryFiles() {
 
-    var folder = new File(appConfig.binNewDir());
+    var folder = new File(App.appDir() + appConfig.binNewDir());
 
     for (var file : Objects.requireNonNull(folder.listFiles())) {
+
+      if (file.getName().contains("migrated")) {
+        continue;
+      }
 
       try (var input = new FileInputStream(file)) {
 
@@ -53,7 +57,7 @@ public class BlackListRegisterImpl implements BlackListRegister {
         var csv = new File(csvName(file.getName()));
 
         try (var writer = new PrintWriter(csv)) {
-          writer.println(appConfig.blackListHeader());
+          writer.println(BlackListRow.header());
           rows.stream()
             .map(BlackListRow::toCsvRow)
             .forEach(writer::println);
@@ -61,7 +65,7 @@ public class BlackListRegisterImpl implements BlackListRegister {
 
         sendMessagesToKafka(csv.getPath());
 
-        file.renameTo(new File(appConfig.binNewDir() + file.getName().replace(".bin", "_migrated.bin")));
+        file.renameTo(new File(App.appDir() + appConfig.binNewDir() + file.getName().replace(".bin", "_migrated.bin")));
 
         producer.sendToBlackList(csv);
 
@@ -70,14 +74,15 @@ public class BlackListRegisterImpl implements BlackListRegister {
 
   }
 
-  private void sendMessagesToKafka(String path) throws IOException {
+  @SneakyThrows
+  private void sendMessagesToKafka(String path) {
     try (var stream = Files.lines(Paths.get(path))) {
       stream.skip(1).forEach(producer::sendToBlackList);
     }
   }
 
   private String csvName(String fileName) {
-    return appConfig.binMigratedDir() + fileName.replace(".bin", "_migrated_" + LocalDateTime.now() + ".csv");
+    return App.appDir() + appConfig.binMigratedDir() + fileName.replace(".bin", "_migrated_" + LocalDateTime.now() + ".csv");
   }
 
 }

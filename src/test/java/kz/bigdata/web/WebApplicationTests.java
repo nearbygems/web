@@ -2,7 +2,6 @@ package kz.bigdata.web;
 
 import kz.bigdata.web.dao.model.PersonDao;
 import kz.bigdata.web.model.Person;
-import kz.bigdata.web.register.PersonRegister;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -31,7 +31,7 @@ public class MongoConnection implements InitializingBean {
 
     var mongoClient = new MongoClient("localhost:27017", mongoClientOptions);
 
-    database = mongoClient.getDatabase("sample");
+    database = mongoClient.getDatabase("web");
   }
 
 }
