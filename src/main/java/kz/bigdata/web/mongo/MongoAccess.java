@@ -15,13 +15,13 @@ public class MongoAccess implements InitializingBean {
   private MongoConnection mongoConnection;
   // endregion
 
-  private MongoCollection<SmartphoneDto> phones;
+  private MongoCollection<SmartphoneDto> smartphones;
   private MongoCollection<BorrowerDto> blacklist;
 
   @Override
   public void afterPropertiesSet() {
 
-    phones = getCollection(SmartphoneDto.class);
+    smartphones = getCollection(SmartphoneDto.class);
     blacklist = getCollection(BorrowerDto.class);
 
   }
@@ -30,8 +30,8 @@ public class MongoAccess implements InitializingBean {
     return mongoConnection.database().getCollection(aClass.getSimpleName(), aClass);
   }
 
-  public MongoCollection<SmartphoneDto> phones() {
-    return phones;
+  public MongoCollection<SmartphoneDto> smartphones() {
+    return smartphones;
   }
 
   public MongoCollection<BorrowerDto> blacklist() {

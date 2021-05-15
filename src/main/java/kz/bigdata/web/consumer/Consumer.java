@@ -2,6 +2,7 @@ package kz.bigdata.web.consumer;
 
 import kz.bigdata.web.config.AppConfig;
 import kz.bigdata.web.register.KafkaRegister;
+import kz.bigdata.web.register.SparkRegister;
 import kz.bigdata.web.util.App;
 import kz.bigdata.web.util.KafkaTopic;
 import kz.bigdata.web.util.KafkaUtil;
@@ -22,6 +23,9 @@ public class Consumer {
   private KafkaRegister kafkaRegister;
 
   @Autowired
+  private SparkRegister sparkRegister;
+
+  @Autowired
   private AppConfig appConfig;
   // endregion
 
@@ -37,9 +41,27 @@ public class Consumer {
   @SneakyThrows
   @KafkaListener(topics = KafkaTopic.BLACKLIST_CSV, groupId = KafkaUtil.GROUP_ID)
   public void listenBlackListCsv(byte[] message) {
-    var fileName = App.appDir() + appConfig.blacklistCsvDir() + "data_" + LocalDateTime.now() + ".csv";
+    var fileName = App.dir() + appConfig.blacklistCsvDir() + "data_" + LocalDateTime.now() + ".csv";
     try (var fos = new FileOutputStream(fileName)) {
       fos.write(message);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  @KafkaListener(topics = KafkaTopic.SMARTPHONES, groupId = KafkaUtil.GROUP_ID)
+  public void listenSmartphones(byte[] message) {
+    try {
+      kafkaRegister.saveToSmartPhones(new String(message, StandardCharsets.UTF_8));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  @KafkaListener(topics = KafkaTopic.SMARTPHONES_CSV, groupId = KafkaUtil.GROUP_ID)
+  public void listenSmartphonesCsv(byte[] message) {
+    try {
+      sparkRegister.saveToSmartPhones(new String(message, StandardCharsets.UTF_8));
     } catch (Exception e) {
       e.printStackTrace();
     }

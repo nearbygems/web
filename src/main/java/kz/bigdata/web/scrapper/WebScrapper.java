@@ -2,6 +2,8 @@ package kz.bigdata.web.scrapper;
 
 import kz.bigdata.web.config.AppConfig;
 import kz.bigdata.web.model.mongo.SmartphoneDto;
+import kz.bigdata.web.producer.Producer;
+import kz.bigdata.web.util.App;
 import kz.bigdata.web.util.Ids;
 import kz.bigdata.web.util.ScrapperUtil;
 import lombok.SneakyThrows;
@@ -9,12 +11,20 @@ import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
 @Component
 public class WebScrapper {
 
   // region Autowired fields
   @Autowired
   private AppConfig appConfig;
+
+  @Autowired
+  private Producer producer;
   // endregion
 
   @SneakyThrows
@@ -43,6 +53,8 @@ public class WebScrapper {
 
     var products = page.body().getElementById("products");
 
+    var smartphones = new ArrayList<SmartphoneDto>();
+
     for (var product : products.getElementsByClass("title")) {
 
       for (var link : product.getElementsByAttribute("href")) {
@@ -51,13 +63,25 @@ public class WebScrapper {
 
           var smartphonePage = link.attr("href");
 
-          var smartphone = parseSmartphonePage(smartphonePage);
+          smartphones.add(parseSmartphonePage(smartphonePage));
 
         }
 
       }
 
     }
+
+    var csv = new File(App.dir() + appConfig.smartphonesCsvDir() + "smartphones_" + LocalDateTime.now() + ".csv");
+
+    try (var writer = new PrintWriter(csv)) {
+      writer.println(SmartphoneDto.header());
+      smartphones.stream()
+        .map(SmartphoneDto::toCsvRow)
+        .peek(producer::sendToSmartphones)
+        .forEach(writer::println);
+    }
+
+    producer.sendToSmartphonesCsv(csv.getPath());
 
   }
 

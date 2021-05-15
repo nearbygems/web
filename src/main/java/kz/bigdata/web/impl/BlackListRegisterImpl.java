@@ -34,7 +34,7 @@ public class BlackListRegisterImpl implements BlackListRegister {
   @SneakyThrows
   public void parseBinaryFiles() {
 
-    var folder = new File(App.appDir() + appConfig.binNewDir());
+    var folder = new File(App.dir() + appConfig.binNewDir());
 
     for (var file : Objects.requireNonNull(folder.listFiles())) {
 
@@ -65,7 +65,7 @@ public class BlackListRegisterImpl implements BlackListRegister {
 
         sendMessagesToKafka(csv.getPath());
 
-        file.renameTo(new File(App.appDir() + appConfig.binNewDir() + file.getName().replace(".bin", "_migrated.bin")));
+        file.renameTo(new File(App.dir() + appConfig.binNewDir() + file.getName().replace(".bin", "_migrated.bin")));
 
         producer.sendToBlackList(csv);
 
@@ -82,7 +82,7 @@ public class BlackListRegisterImpl implements BlackListRegister {
   }
 
   private String csvName(String fileName) {
-    return App.appDir() + appConfig.binMigratedDir() + fileName.replace(".bin", "_migrated_" + LocalDateTime.now() + ".csv");
+    return App.dir() + appConfig.binMigratedDir() + fileName.replace(".bin", "_migrated_" + LocalDateTime.now() + ".csv");
   }
 
 }

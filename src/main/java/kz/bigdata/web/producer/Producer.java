@@ -31,14 +31,13 @@ public class Producer {
     send(KafkaTopic.SMARTPHONES, message.getBytes(StandardCharsets.UTF_8));
   }
 
-  @SneakyThrows
-  public void sendToBlackList(File file) {
-    send(KafkaTopic.BLACKLIST_CSV, Files.readAllBytes(file.toPath()));
+  public void sendToSmartphonesCsv(String csv) {
+    send(KafkaTopic.SMARTPHONES_CSV, csv.getBytes(StandardCharsets.UTF_8));
   }
 
   @SneakyThrows
-  public void sendToSmartphones(File file) {
-    send(KafkaTopic.SMARTPHONES_CSV, Files.readAllBytes(file.toPath()));
+  public void sendToBlackList(File file) {
+    send(KafkaTopic.BLACKLIST_CSV, Files.readAllBytes(file.toPath()));
   }
 
 }

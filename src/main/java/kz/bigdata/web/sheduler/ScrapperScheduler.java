@@ -34,17 +34,17 @@ public class ScrapperScheduler {
   @PostConstruct
   private void checkDirectory() {
 
-    var binNewDir = new File(App.appDir() + appConfig.binNewDir());
-    var blacklistCsvDir = new File(App.appDir() + appConfig.blacklistCsvDir());
-    var binMigratedDir = new File(App.appDir() + appConfig.binMigratedDir());
+    var binNewDir = new File(App.dir() + appConfig.binNewDir());
+    var blacklistCsvDir = new File(App.dir() + appConfig.blacklistCsvDir());
+    var binMigratedDir = new File(App.dir() + appConfig.binMigratedDir());
 
-    var smartphonesCsvDir = new File(App.appDir() + appConfig.smartphonesCsvDir());
+    var smartphonesCsvDir = new File(App.dir() + appConfig.smartphonesCsvDir());
 
     if (!binNewDir.exists()) {
       if (binNewDir.mkdirs()) {
         Files.copy(
           Paths.get("src/main/resources/data.bin"),
-          Paths.get(App.appDir() + appConfig.binNewDir() + "data.bin")
+          Paths.get(App.dir() + appConfig.binNewDir() + "data.bin")
         );
       }
     }

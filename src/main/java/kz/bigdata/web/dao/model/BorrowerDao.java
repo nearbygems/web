@@ -1,6 +1,6 @@
 package kz.bigdata.web.dao.model;
 
-import kz.bigdata.web.model.black_list.Borrower;
+import kz.bigdata.web.model.web.Borrower;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -17,12 +17,11 @@ public interface BorrowerDao {
   @Select(
     "SELECT * FROM blacklist WHERE ctn = #{ctn}"
   )
-  Borrower loadById(@Param("ctn") String ctn);
+  Borrower loadByCtn(@Param("ctn") String ctn);
 
   @Select(
     "SELECT * FROM blacklist"
   )
   List<Borrower> load();
-
 
 }

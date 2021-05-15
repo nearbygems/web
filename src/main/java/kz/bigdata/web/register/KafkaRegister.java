@@ -4,4 +4,6 @@ public interface KafkaRegister {
 
   void saveToBlackList(String row);
 
+  void saveToSmartPhones(String row);
+
 }

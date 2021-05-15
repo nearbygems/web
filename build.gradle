@@ -1,6 +1,7 @@
 plugins {
     id 'org.springframework.boot' version '2.4.5'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'com.bmuschko.docker-remote-api' version '3.2.3'
     id 'java'
 }
 
@@ -12,6 +13,18 @@ repositories {
     mavenCentral()
 }
 
+docker {
+    registryCredentials {
+        username = getConfigurationProperty('DOCKER_USERNAME', 'docker.username')
+        password = getConfigurationProperty('DOCKER_PASSWORD', 'docker.password')
+        email = getConfigurationProperty('DOCKER_EMAIL', 'docker.email')
+    }
+}
+
+String getConfigurationProperty(String envVar, String sysProp) {
+    System.getenv(envVar) ?: project.findProperty(sysProp)
+}
+
 dependencies {
 
     compileOnly 'org.projectlombok:lombok'
@@ -21,27 +34,44 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
 
-    implementation 'org.springframework.boot:spring-boot-starter'
-
-    implementation "org.springframework.boot:spring-boot-starter-web"
-
     implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.1"
-
-    implementation "org.jsoup:jsoup:1.7.2"
-
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.kafka:spring-kafka'
-
-    implementation "org.postgresql:postgresql:42.2.8"
-
+    implementation "org.apache.spark:spark-core_2.12:3.0.1"
+    implementation "org.apache.spark:spark-sql_2.12:3.0.1"
     implementation "org.mongodb:mongo-java-driver:3.12.7"
+    implementation "org.postgresql:postgresql:42.2.8"
+    implementation "org.jsoup:jsoup:1.7.2"
 
     compile "org.jetbrains:annotations:17.0.0"
     compile "kz.greetgo.util:greetgo.util:0.1.3"
     compile "kz.greetgo:greetgo.scheduling:3.0.3"
     compile "kz.greetgo.conf:greetgo.conf:2.0.0"
     compile "org.liquibase:liquibase-core:3.8.0"
+
 }
 
 test {
     useJUnitPlatform()
 }
+
+task createDockerfile(type: Dockerfile) {
+    destFile = project.file('build/docker/Dockerfile')
+    from 'openjdk:11.0.5-jre'
+    maintainer 'Bergen Asym "bergen.asymov@gmail.com"'
+    copyFile war.archiveName, '/app/web-service.war'
+    entryPoint 'java'
+    defaultCommand '-jar', '/app/web-service.war'
+    exposePort 8080
+    runCommand 'apk --update --no-cache add curl'
+    instruction 'HEALTHCHECK CMD curl -f http://localhost:8080/health || exit 1'
+}
+
+task syncWebAppArchive(type: Sync) {
+    dependsOn assemble
+    from war.archivePath
+    into createDockerfile.destFile.parentFile
+}
+
+createDockerfile.dependsOn syncWebAppArchive

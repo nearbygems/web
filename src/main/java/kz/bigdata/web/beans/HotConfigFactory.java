@@ -14,7 +14,7 @@ public class HotConfigFactory extends FileConfigFactory {
 
   @Override
   protected Path getBaseDir() {
-    return App.appDir().resolve("config");
+    return App.dir().resolve("config");
   }
 
   @Bean

@@ -1,47 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
-                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+
+    <changeSet author="bergen" id="create-table-smartphones">
+        <sql endDelimiter=";;" splitStatements="true"> <![CDATA[
+
+        create sequence table_smartphones_v2_id_seq;;
+
+        create table smartphones_v2
+
+        (
+
+        id              integer       not null default nextval('table_smartphones_v2_id_seq'),
+        title           varchar(100)  not null,
+        price           integer       not null,
+        seller          varchar(100)  not null,
+        ram             varchar(20),
+        memory          varchar(20),
+
+        primary key (id)
+
+        );;
+
+      ]]></sql>
+    </changeSet>
+
+    <changeSet author="bergen" id="smartphones-comments">
+        <sql endDelimiter=";;" splitStatements="true"> <![CDATA[
+
+        comment on table smartphones_v2 --
+        is 'Смартфоны из alfa.kz';;
+
+        comment on column smartphones_v2.title is 'Наименование смартфона';;
+        comment on column smartphones_v2.price is 'Цена смартфона';;
+        comment on column smartphones_v2.seller is 'Наименование магазина';;
+        comment on column smartphones_v2.ram is 'Оперативная память';;
+        comment on column smartphones_v2.memory is 'Встроенная память';;
+
+      ]]></sql>
+    </changeSet>
 
     <changeSet author="bergen" id="create-table-black-list">
         <sql endDelimiter=";;" splitStatements="true"> <![CDATA[
-      CREATE TABLE blacklist
-      (
-        ctn             VARCHAR(10),
+
+        create table blacklist
+
+        (
+
+        ctn             varchar(10),
         event_time      timestamp
-      );;
+
+        );;
+
       ]]></sql>
     </changeSet>
 
     <changeSet author="bergen" id="create-index-black-list-target_ctn">
         <sql endDelimiter=";;" splitStatements="true"> <![CDATA[
-      create index index_ctn on blacklist(ctn);;
+
+        create index index_ctn on blacklist(ctn);;
+
       ]]></sql>
     </changeSet>
 
     <changeSet author="bergen" id="black-list-comments">
         <sql endDelimiter=";;" splitStatements="true"> <![CDATA[
-       comment on table blacklist --
+
+        comment on table blacklist --
         is 'Черный список заемщиков';;
-       comment on column blacklist.ctn is 'Номер телефона заемщика';;
-       comment on column blacklist.event_time is 'Скорее всего время, когда заемщик был занесен в чс';;
+
+        comment on column blacklist.ctn is 'Номер телефона заемщика';;
+        comment on column blacklist.event_time is 'Скорее всего время, когда заемщик был занесен в чс';;
+
       ]]></sql>
     </changeSet>
 
     <changeSet author="bergen" id="create-table-logs">
         <sql endDelimiter=";;" splitStatements="true"> <![CDATA[
 
-        CREATE SEQUENCE table_logs_id_seq;;
+        create sequence table_logs_id_seq;;
 
-        CREATE TABLE logs
-      (
-        id             INTEGER NOT NULL DEFAULT NEXTVAL('table_logs_id_seq'),
-        ctn            VARCHAR(10),
-        result         VARCHAR(64),
+        create table logs
+
+        (
+
+        id             integer not null default nextval('table_logs_id_seq'),
+        ctn            varchar(10),
+        result         varchar(64),
         log_timestamp  timestamp
-      );;
+
+        );;
+
       ]]></sql>
     </changeSet>
 
