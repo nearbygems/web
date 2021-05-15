@@ -3,7 +3,7 @@ package kz.bigdata.web.impl;
 import kz.bigdata.web.config.AppConfig;
 import kz.bigdata.web.model.parse_bin.BinaryLine;
 import kz.bigdata.web.model.parse_bin.BlackListRow;
-import kz.bigdata.web.producer.KafkaProducer;
+import kz.bigdata.web.producer.Producer;
 import kz.bigdata.web.register.BlackListRegister;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class BlackListRegisterImpl implements BlackListRegister {
 
   // region Autowired fields
   @Autowired
-  private KafkaProducer kafkaProducer;
+  private Producer producer;
 
   @Autowired
   private AppConfig appConfig;
@@ -59,19 +59,20 @@ public class BlackListRegisterImpl implements BlackListRegister {
             .forEach(writer::println);
         }
 
-        file.delete();
+        sendMessagesToKafka(csv.getPath());
 
-        sendToKafka(csv.getPath());
+        file.renameTo(new File(appConfig.binNewDir() + file.getName().replace(".bin", "_migrated.bin")));
+
+        producer.sendToBlackList(csv);
 
       }
     }
 
-
   }
 
-  private void sendToKafka(String path) throws IOException {
+  private void sendMessagesToKafka(String path) throws IOException {
     try (var stream = Files.lines(Paths.get(path))) {
-      stream.forEach(kafkaProducer::sendToBlackList);
+      stream.skip(1).forEach(producer::sendToBlackList);
     }
   }
 

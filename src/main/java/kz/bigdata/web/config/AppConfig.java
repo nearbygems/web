@@ -7,11 +7,19 @@ import kz.greetgo.conf.hot.Description;
 public interface AppConfig {
 
   @Description("Директория для бинарных файлов")
-  @DefaultStrValue("src/main/resources/new")
+  @DefaultStrValue("src/main/resources/blacklist/new/")
   String binNewDir();
 
+  @Description("Директория для бинарных файлов")
+  @DefaultStrValue("src/main/resources/blacklist/csv/")
+  String blacklistCsvDir();
+
+  @Description("Директория для бинарных файлов")
+  @DefaultStrValue("src/main/resources/blacklist/csv/")
+  String smartphonesCsvDir();
+
   @Description("Директория для csv файлов")
-  @DefaultStrValue("src/main/resources/migrated")
+  @DefaultStrValue("src/main/resources/blacklist/migrated/")
   String binMigratedDir();
 
   @Description("Наименования столбцов бинарных файлов")

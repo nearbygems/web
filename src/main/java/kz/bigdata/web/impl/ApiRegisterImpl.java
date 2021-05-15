@@ -25,4 +25,5 @@ public class ApiRegisterImpl implements ApiRegister {
   public List<Borrower> getBorrowers() {
     return borrowerDao.load();
   }
+
 }

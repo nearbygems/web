@@ -2,6 +2,7 @@ package kz.bigdata.web.config.kafka;
 
 import kz.bigdata.web.util.KafkaUtil;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +17,7 @@ import java.util.Map;
 public class ConsumerConfiguration {
 
   @Bean
-  public ConsumerFactory<String, String> consumerFactory() {
+  public ConsumerFactory<String, byte[]> consumerFactory() {
     return new DefaultKafkaConsumerFactory<>(consumerConfigurations());
   }
 
@@ -26,13 +27,13 @@ public class ConsumerConfiguration {
     configurations.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaUtil.KAFKA_BROKER);
     configurations.put(ConsumerConfig.GROUP_ID_CONFIG, KafkaUtil.GROUP_ID);
     configurations.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-    configurations.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+    configurations.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class);
     return configurations;
   }
 
   @Bean
-  ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
-    var factory = new ConcurrentKafkaListenerContainerFactory<String, String>();
+  ConcurrentKafkaListenerContainerFactory<String, byte[]> kafkaListenerContainerFactory() {
+    var factory = new ConcurrentKafkaListenerContainerFactory<String, byte[]>();
     factory.setConsumerFactory(consumerFactory());
     return factory;
   }

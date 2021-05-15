@@ -12,8 +12,33 @@ services:
       - ./volumes/postgres:/var/lib/postgresql/data
       - ./postgres-init:/docker-entrypoint-initdb.d
 
+  mongo:
+    image: mongo:4.2.0
+    container_name: mongo_web
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./volumes/mongo:/data/db
+      - ./mongo-init:/docker-entrypoint-initdb.d
+
+  mongo-express:
+    image: mongo-express:0.54.0
+    container_name: mongo_express_web
+    restart: always
+    depends_on:
+      - mongo
+    ports:
+      - "28081:8081"
+    environment:
+      ME_CONFIG_OPTIONS_EDITORTHEME: cobalt
+      ME_CONFIG_BASICAUTH_USERNAME: bergen
+      ME_CONFIG_BASICAUTH_PASSWORD: bergen
+      ME_CONFIG_MONGODB_SERVER: mongo
+
   zookeeper:
     image: wurstmeister/zookeeper
+    container_name: zookeeper_web
     restart: always
     volumes:
       - "./volumes/zookeeper/data:/var/lib/zookeeper/data"
@@ -23,6 +48,7 @@ services:
 
   kafka:
     image: wurstmeister/kafka
+    container_name: kafka_web
     restart: always
     ports:
       - "9092:9092"
@@ -33,13 +59,3 @@ services:
     environment:
       KAFKA_ADVERTISED_HOST_NAME: localhost
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-
-  kafdrop:
-    image: obsidiandynamics/kafdrop:3.28.0-SNAPSHOT
-    ports:
-      - "9003:9003"                                              # KAFDROP   http://localhost:9003
-    environment:
-      KAFKA_BROKERCONNECT: "kafka:9092"
-      SERVER_PORT: "9003"
-      JVM_OPTS: "-Xms32M -Xmx164M"
-      SERVER_SERVLET_CONTEXTPATH: "/"

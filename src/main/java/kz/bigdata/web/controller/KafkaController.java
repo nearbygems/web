@@ -1,6 +1,6 @@
 package kz.bigdata.web.controller;
 
-import kz.bigdata.web.producer.KafkaProducer;
+import kz.bigdata.web.producer.Producer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/kafka")
 public class KafkaController {
 
-  private final KafkaProducer kafkaProducer;
+  private final Producer producer;
 
   @Autowired
-  public KafkaController(KafkaProducer kafkaProducer) {
-    this.kafkaProducer = kafkaProducer;
+  public KafkaController(Producer producer) {
+    this.producer = producer;
   }
 
   @PostMapping("/send-to-blacklist")
   public void sendToBlackList(@RequestParam("message") String message) {
-    kafkaProducer.sendToBlackList(message);
+    producer.sendToBlackList(message);
   }
 
 }
