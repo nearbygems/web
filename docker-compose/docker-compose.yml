@@ -1,3 +1,5 @@
+# docker-compose для работы через ide
+
 version: "2.3"
 
 networks:
