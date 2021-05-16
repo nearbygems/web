@@ -6,7 +6,10 @@ plugins {
     id 'com.bmuschko.docker-remote-api' version '6.4.0'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'scala'
 }
+
+ext.scala_version = "2.12.1"
 
 group = 'big-data'
 version = '1.0.0'

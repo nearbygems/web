@@ -15,6 +15,10 @@ public interface PostgresConfig {
   @DefaultIntValue(5432)
   int port();
 
+  @Description("Драйвер")
+  @DefaultStrValue("org.postgresql.Driver")
+  String driver();
+
   @Description("Наименование БД")
   @DefaultStrValue("web")
   String dbName();

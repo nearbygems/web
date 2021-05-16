@@ -20,10 +20,10 @@ public class Consumer {
 
   // region Autowired fields
   @Autowired
-  private KafkaRegister kafkaRegister;
+  private SparkRegister sparkRegister;
 
   @Autowired
-  private SparkRegister sparkRegister;
+  private KafkaRegister kafkaRegister;
 
   @Autowired
   private AppConfig appConfig;
