@@ -1,7 +1,6 @@
 package kz.bigdata.web.sheduler;
 
 import kz.bigdata.web.config.AppConfig;
-import kz.bigdata.web.data.Data;
 import kz.bigdata.web.scrapper.WebScrapper;
 import kz.bigdata.web.util.App;
 import kz.greetgo.scheduling.Scheduled;
@@ -11,7 +10,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 @Component
 public class ScrapperScheduler {
@@ -42,16 +42,10 @@ public class ScrapperScheduler {
 
     if (!binNewDir.exists()) {
       if (binNewDir.mkdirs()) {
-        try (var input = Data.class.getResourceAsStream("data.bin")) {
-          if (input != null) {
-            var buffer = new byte[input.available()];
-            input.read(buffer);
-            var file = new File(App.dir() + appConfig.binNewDir() + "data.bin");
-            try (var out = new FileOutputStream(file)) {
-              out.write(buffer);
-            }
-          }
-        }
+        Files.copy(
+          Paths.get("src/main/resources/data.bin"),
+          Paths.get(App.dir() + appConfig.binNewDir() + "data.bin")
+        );
       }
     }
 

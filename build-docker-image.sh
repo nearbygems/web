@@ -1,5 +1,5 @@
 #!/bin/sh
 
-./gradlew build
+./gradlew build -x test
 ./gradlew createDockerImage
 ./gradlew showImageName

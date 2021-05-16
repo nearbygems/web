@@ -63,7 +63,7 @@ services:
       - "./volumes/kafka_logs:/opt/kafka/logs"
       - "./volumes/kafka_tmp_logs:/tmp/kafka-logs"
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_ADVERTISED_HOST_NAME: kafka
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
 
   hadoop:
@@ -74,3 +74,10 @@ services:
       - '9000:9000'
       - '50075:50075'
       - '50010:50010'
+
+  bergen-web:
+    image: big-data/web:1.0.0
+    container_name: bergen-web
+    restart: always
+    ports:
+      - "8080:8080"
