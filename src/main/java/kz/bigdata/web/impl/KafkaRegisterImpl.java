@@ -1,7 +1,7 @@
 package kz.bigdata.web.impl;
 
 import kz.bigdata.web.dao.model.BorrowerDao;
-import kz.bigdata.web.dao.model.SmartphoneDao;
+import kz.bigdata.web.dao.model.Smartphone_v2_Dao;
 import kz.bigdata.web.model.mongo.BorrowerDto;
 import kz.bigdata.web.model.mongo.SmartphoneDto;
 import kz.bigdata.web.mongo.MongoAccess;
@@ -14,7 +14,7 @@ public class KafkaRegisterImpl implements KafkaRegister {
 
   // region Autowired fields
   @Autowired
-  private SmartphoneDao smartphoneDao;
+  private Smartphone_v2_Dao smartphoneV2Dao;
 
   @Autowired
   private BorrowerDao borrowerDao;
@@ -39,7 +39,7 @@ public class KafkaRegisterImpl implements KafkaRegister {
     if (smartphone == null) {
       return;
     }
-    smartphoneDao.save(smartphone);
+    smartphoneV2Dao.save(smartphone);
     mongoAccess.smartphones().insertOne(smartphone);
   }
 

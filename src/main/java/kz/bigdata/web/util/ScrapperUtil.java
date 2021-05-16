@@ -1,11 +1,15 @@
 package kz.bigdata.web.util;
 
 import org.jsoup.nodes.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Comparator;
 import java.util.stream.Stream;
 
 public class ScrapperUtil {
+
+  private static Logger logger = LoggerFactory.getLogger(ScrapperUtil.class);
 
   public static String getTitle(Element body) {
     var iterator = body.getElementsByClass("title").stream().iterator();
@@ -40,7 +44,7 @@ public class ScrapperUtil {
         return null;
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      logger.info("6724qtH4Tx :: ram is null");
       return null;
     }
   }
@@ -54,7 +58,7 @@ public class ScrapperUtil {
         return null;
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      logger.info("P3S40a2zRS :: memory is null");
       return null;
     }
   }

@@ -2,10 +2,10 @@ POST http://localhost:8080/api/get-result
 Content-Type: application/json
 
 {
-  "ctn": "7051231234",
+  "ctn": "7052468563",
   "iin": "940827300160",
-  "smartphoneId": 2,
-  "income": 120000,
+  "smartphoneId": 984,
+  "income": 100000,
   "createdAt": "2020-10-01T12:30:00"
 }
 

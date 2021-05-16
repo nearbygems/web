@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-
 @RestController
 @RequestMapping("/web-scrapper")
 public class ScrapperController {
@@ -20,7 +18,7 @@ public class ScrapperController {
   }
 
   @PostMapping("/parse-web-sites")
-  public void parseWebSites() throws IOException {
+  public void parseWebSites() {
     webScrapper.parseWebSites();
   }
 

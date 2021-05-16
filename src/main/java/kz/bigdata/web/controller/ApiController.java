@@ -1,9 +1,6 @@
 package kz.bigdata.web.controller;
 
-import kz.bigdata.web.model.web.Borrower;
-import kz.bigdata.web.model.web.Client;
-import kz.bigdata.web.model.web.Result;
-import kz.bigdata.web.model.web.Smartphone;
+import kz.bigdata.web.model.web.*;
 import kz.bigdata.web.register.ApiRegister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +32,16 @@ public class ApiController {
   @PostMapping("/borrowers")
   public List<Borrower> getBorrowers() {
     return apiRegister.getBorrowers();
+  }
+
+  @PostMapping("/smartphone_v2")
+  public Smartphone_v2 getSmartphone_v2(@RequestParam("id") int id) {
+    return apiRegister.getSmartphone_v2(id);
+  }
+
+  @PostMapping("/smartphones_v2")
+  public List<Smartphone_v2> getSmartphones_v2() {
+    return apiRegister.getSmartphones_v2();
   }
 
   @PostMapping("/smartphone")

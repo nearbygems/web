@@ -8,6 +8,8 @@ import kz.bigdata.web.util.Ids;
 import kz.bigdata.web.util.ScrapperUtil;
 import lombok.SneakyThrows;
 import org.jsoup.Jsoup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +20,8 @@ import java.util.ArrayList;
 
 @Component
 public class WebScrapper {
+
+  Logger logger = LoggerFactory.getLogger(WebScrapper.class);
 
   // region Autowired fields
   @Autowired
@@ -30,6 +34,8 @@ public class WebScrapper {
   @SneakyThrows
   public void parseWebSites() {
 
+    logger.info("X479SRJbXe :: started parsing website = `" + appConfig.urlToParse() + "`");
+
     var body = Jsoup.connect(appConfig.urlToParse())
       .timeout(1000000)
       .get()
@@ -41,6 +47,7 @@ public class WebScrapper {
 
     for (var i = 0; i < pagesCount; i++) {
       var url = appConfig.websiteToParse() + pagesUrl.replaceAll("#", "/page" + i + "#");
+      logger.info("0N25zt0qMu :: started parsing page = `" + url + "`");
       parsePage(url);
     }
 
@@ -73,6 +80,8 @@ public class WebScrapper {
 
     var csv = new File(App.dir() + appConfig.smartphonesCsvDir() + "smartphones_" + LocalDateTime.now() + ".csv");
 
+    logger.info("9w8cw52dfh :: started creating csv = `" + csv.getName() + "`");
+
     try (var writer = new PrintWriter(csv)) {
       writer.println(SmartphoneDto.header());
       smartphones.stream()
@@ -80,6 +89,8 @@ public class WebScrapper {
         .peek(producer::sendToSmartphones)
         .forEach(writer::println);
     }
+
+    logger.info("22ttRr2c55 :: page parsed with total smartphones count = `" + smartphones.size() + "`");
 
     producer.sendToSmartphonesCsv(csv.getPath());
 

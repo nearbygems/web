@@ -68,44 +68,44 @@ services:
       KAFKA_ADVERTISED_HOST_NAME: kafka
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
 
-  hadoop:
-    image: teivah/hadoop:2.9.2
-    container_name: hadoop-web
-    ports:
-      - '50070:50070'
-      - '9000:9000'
-      - '50075:50075'
-      - '50010:50010'
-
-  spark-master:
-    image: bitnami/spark:3
-    container_name: spark-master-web
-    ports:
-      - '7077:7077'
-    environment:
-      - SPARK_MODE=master
-      - SPARK_RPC_AUTHENTICATION_ENABLED=no
-      - SPARK_RPC_ENCRYPTION_ENABLED=no
-      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
-      - SPARK_SSL_ENABLED=no
-      - SPARK_WORKER_INSTANCES=1
-
-  spark-worker:
-    image: bitnami/spark:3
-    container_name: spark-worker-web
-    depends_on:
-      - spark-master
-    environment:
-      - SPARK_MODE=worker
-      - SPARK_MASTER_URL=spark://spark-master:7077
-      - SPARK_WORKER_MEMORY=1G
-      - SPARK_WORKER_CORES=1
-      - SPARK_RPC_AUTHENTICATION_ENABLED=no
-      - SPARK_RPC_ENCRYPTION_ENABLED=no
-      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
-      - SPARK_SSL_ENABLED=no
-      - SPARK_DRIVER_MEMORY=128m
-      - SPARK_EXECUTOR_MEMORY=256m
+  #  hadoop:
+  #    image: teivah/hadoop:2.9.2
+  #    container_name: hadoop-web
+  #    ports:
+  #      - '50070:50070'
+  #      - '9000:9000'
+  #      - '50075:50075'
+  #      - '50010:50010'
+  #
+  #  spark-master:
+  #    image: bitnami/spark:3
+  #    container_name: spark-master-web
+  #    ports:
+  #      - '7077:7077'
+  #    environment:
+  #      - SPARK_MODE=master
+  #      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+  #      - SPARK_RPC_ENCRYPTION_ENABLED=no
+  #      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+  #      - SPARK_SSL_ENABLED=no
+  #      - SPARK_WORKER_INSTANCES=1
+  #
+  #  spark-worker:
+  #    image: bitnami/spark:3
+  #    container_name: spark-worker-web
+  #    depends_on:
+  #      - spark-master
+  #    environment:
+  #      - SPARK_MODE=worker
+  #      - SPARK_MASTER_URL=spark://spark-master:7077
+  #      - SPARK_WORKER_MEMORY=1G
+  #      - SPARK_WORKER_CORES=1
+  #      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+  #      - SPARK_RPC_ENCRYPTION_ENABLED=no
+  #      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+  #      - SPARK_SSL_ENABLED=no
+  #      - SPARK_DRIVER_MEMORY=128m
+  #      - SPARK_EXECUTOR_MEMORY=256m
 
   bergen-web:
     image: big-data/web:1.0.0

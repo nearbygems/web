@@ -1,6 +1,6 @@
 package kz.bigdata.web.model.mongo;
 
-import kz.bigdata.web.model.web.Smartphone;
+import kz.bigdata.web.model.web.Smartphone_v2;
 import kz.bigdata.web.util.Ids;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
@@ -45,8 +45,8 @@ public class SmartphoneDto {
     return ret;
   }
 
-  public Smartphone web() {
-    var ret = new Smartphone();
+  public Smartphone_v2 web() {
+    var ret = new Smartphone_v2();
     ret.title = title;
     ret.price = price;
     ret.seller = seller;

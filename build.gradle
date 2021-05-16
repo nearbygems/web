@@ -32,9 +32,9 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.kafka:spring-kafka'
-    implementation "org.apache.spark:spark-core_2.12:3.0.1"
-    implementation "org.apache.spark:spark-sql_2.12:3.0.1"
+    implementation 'org.apache.spark:spark-sql_2.12:3.0.1'
     implementation "org.mongodb:mongo-java-driver:3.12.7"
+    implementation 'org.codehaus.janino:janino:3.0.8'
     implementation "org.postgresql:postgresql:42.2.8"
     implementation "org.jsoup:jsoup:1.7.2"
 

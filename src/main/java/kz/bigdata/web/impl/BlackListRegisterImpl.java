@@ -7,6 +7,8 @@ import kz.bigdata.web.producer.Producer;
 import kz.bigdata.web.register.BlackListRegister;
 import kz.bigdata.web.util.App;
 import lombok.SneakyThrows;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +24,8 @@ import java.util.Objects;
 @Component
 public class BlackListRegisterImpl implements BlackListRegister {
 
+  Logger logger = LoggerFactory.getLogger(BlackListRegister.class);
+
   // region Autowired fields
   @Autowired
   private Producer producer;
@@ -36,11 +40,15 @@ public class BlackListRegisterImpl implements BlackListRegister {
 
     var folder = new File(App.dir() + appConfig.binNewDir());
 
+    logger.info("f527jp0JBr :: started parsing files in the folder = `" + folder.getName() + "`");
+
     for (var file : Objects.requireNonNull(folder.listFiles())) {
 
       if (file.getName().contains("migrated")) {
         continue;
       }
+
+      logger.info("fbB4i4648l :: started parsing file = `" + file.getName() + "`");
 
       try (var input = new FileInputStream(file)) {
 
@@ -56,6 +64,8 @@ public class BlackListRegisterImpl implements BlackListRegister {
 
         var csv = new File(csvName(file.getName()));
 
+        logger.info("8f46sGrL3h :: started creating csv file = `" + csv.getName() + "`");
+
         try (var writer = new PrintWriter(csv)) {
           writer.println(BlackListRow.header());
           rows.stream()
@@ -70,7 +80,12 @@ public class BlackListRegisterImpl implements BlackListRegister {
         producer.sendToBlackList(csv);
 
       }
+
+      logger.info("X3V4a8n86w :: file = `" + file.getName() + "` had been parsed");
+
     }
+
+    logger.info("2Y6Ta4i6w8 :: all files had been parsed");
 
   }
 

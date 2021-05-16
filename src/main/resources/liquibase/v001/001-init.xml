@@ -125,6 +125,7 @@
         id             integer not null default nextval('table_logs_id_seq'),
         ctn            varchar(10),
         result         varchar(64),
+        reason         varchar(64),
         log_timestamp  timestamp
 
         );;
