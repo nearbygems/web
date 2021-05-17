@@ -17,8 +17,10 @@ import java.util.Map;
 @Configuration
 public class ConsumerConfiguration {
 
+  // region Autowired fields
   @Autowired
   private KafkaConfig kafkaConfig;
+  // endregion
 
   @Bean
   public ConsumerFactory<String, byte[]> consumerFactory() {

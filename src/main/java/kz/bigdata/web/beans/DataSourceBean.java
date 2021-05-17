@@ -12,8 +12,10 @@ import javax.sql.DataSource;
 @Component
 public class DataSourceBean {
 
+  // region Autowired fields
   @Autowired
   private PostgresConfig postgresConfig;
+  // endregion
 
   @Bean
   public DataSource dataSource() {

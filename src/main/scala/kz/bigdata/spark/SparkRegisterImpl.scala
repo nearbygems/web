@@ -12,9 +12,11 @@ import java.io.File
 @Component
 class SparkRegisterImpl extends SparkRegister {
 
+  // region Autowired fields
   @Autowired val postgresConfig: PostgresConfig = null
   @Autowired val sparkConfig: SparkConfig = null
   @Autowired val hdfsConfig: HdfsConfig = null
+  // endregion
 
   def getBrandAndModel(row: Row): Row = {
     val title = row.getString(0).trim.split("\\s+")

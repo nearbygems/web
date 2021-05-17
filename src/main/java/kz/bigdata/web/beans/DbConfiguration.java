@@ -13,8 +13,10 @@ import javax.sql.DataSource;
 @MapperScan(basePackageClasses = BeanConfigDao.class)
 public class DbConfiguration {
 
+  // region Autowired fields
   @Autowired
   private DataSource dataSource;
+  // endregion
 
   @Bean
   public SpringLiquibase liquibase() {

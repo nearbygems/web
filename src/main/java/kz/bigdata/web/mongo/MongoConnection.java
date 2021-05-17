@@ -15,8 +15,10 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 @Component
 public class MongoConnection implements InitializingBean {
 
+  // region Autowired fields
   @Autowired
   private MongoConfig mongoConfig;
+  // endregion
 
   private MongoDatabase database;
 

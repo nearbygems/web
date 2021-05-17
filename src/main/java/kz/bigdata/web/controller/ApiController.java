@@ -20,7 +20,6 @@ public class ApiController {
 
   @PostMapping("/get-result")
   public Result getResult(@RequestBody Client client) {
-
     return apiRegister.getResult(client);
   }
 
