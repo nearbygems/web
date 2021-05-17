@@ -1,58 +1,87 @@
 package kz.bigdata.spark
 
-import kz.bigdata.web.config.PostgresConfig
+import kz.bigdata.web.config.{HdfsConfig, PostgresConfig, SparkConfig}
 import kz.bigdata.web.register.SparkRegister
-import org.apache.spark.sql.expressions.Window
-import org.apache.spark.sql.functions.row_number
-import org.apache.spark.sql.types.StructType
-import org.apache.spark.sql.{SaveMode, SparkSession}
+import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
+import org.apache.spark.sql.{Row, SaveMode, SparkSession}
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-import java.util.Properties
+import java.io.File
 
 @Component
 class SparkRegisterImpl extends SparkRegister {
 
   @Autowired val postgresConfig: PostgresConfig = null
+  @Autowired val sparkConfig: SparkConfig = null
+  @Autowired val hdfsConfig: HdfsConfig = null
+
+  def getBrandAndModel(row: Row): Row = {
+    val title = row.getString(0).trim.split("\\s+")
+    if (title.nonEmpty) {
+      val brand = title(0)
+      val model = StringBuilder.newBuilder
+      for (i <- 1 until title.length) {
+        if (!title(i).toLowerCase().contains("gb")) {
+          model ++= title(i) + " "
+        }
+      }
+      return Row.fromSeq(Seq(brand.trim, model.mkString.trim, row.getString(1).trim.toInt))
+    }
+    Row.fromSeq(Seq(null, null, null))
+  }
 
   override def saveToSmartPhones(csv: String): Unit = {
 
-    println(csv)
+    val file = new File(csv)
 
-    val spark = SparkSession.builder.master("local").appName("Spark").getOrCreate
+    val spark = SparkSession.builder
+      .master("spark://" + sparkConfig.host + ":" + sparkConfig.port)
+      .appName("Web-App")
+      .getOrCreate
 
-    val schema = new StructType()
-      .add("title", "string")
-      .add("price", "int")
-      .add("seller", "string")
-      .add("ram", "string")
-      .add("memory", "string")
+    val df = spark.read
+      .format("csv")
+      .option("sep", ";")
+      .option("header", "true")
+      .load(csv)
 
-    val df = spark.read.schema(schema)
-      .csv(csv)
-      .toDF
+    val rows = df.select("title", "price")
+      .collect
+      .toStream
+      .map(row => getBrandAndModel(row))
+      .filter(row => !row.anyNull)
 
-    df.createOrReplaceTempView("smartphones")
+    val schema = StructType(Array(
+      StructField("brand", StringType),
+      StructField("model", StringType),
+      StructField("price", IntegerType)))
 
-    val num = Window.partitionBy("title").orderBy("price")
+    val smartphones = spark.createDataFrame(spark.sparkContext.parallelize(rows), schema)
 
-    df.withColumn("row_number", row_number.over(num))
+    smartphones.createOrReplaceTempView("smartphones")
 
-    val url = "jdbc:postgresql://" + postgresConfig.host + ":" + postgresConfig.port + "/" + postgresConfig.dbName
-    val properties = new Properties
-    properties.put("user", postgresConfig.username)
-    properties.put("password", postgresConfig.password)
-    properties.put("dbname", postgresConfig.dbName)
-    properties.put("jdbcDriver", postgresConfig.driver)
-    properties.put("jdbcUrl", url)
+    val result = spark.sql("select brand, model, avg(price) as price from smartphones group by brand, model")
 
-    Class.forName(postgresConfig.driver)
+    val url = "jdbc:postgresql://" +
+      postgresConfig.host + ":" +
+      postgresConfig.port + "/" +
+      postgresConfig.dbName
 
-    val sqlDF = spark.sql("SELECT title as brand, seller as model, price FROM smartphones")
+    result.write
+      .mode(SaveMode.Append)
+      .format("jdbc")
+      .option("user", postgresConfig.username)
+      .option("password", postgresConfig.password)
+      .option("dbname", postgresConfig.dbName)
+      .option("dbtable", "smartphones")
+      .option("driver", postgresConfig.driver)
+      .option("url", url)
+      .save()
 
-    sqlDF.write.mode(SaveMode.Append)
-      .jdbc(url, "smartphones", properties)
+    result.write
+      .parquet("hdfs://" + hdfsConfig.host + ":" + hdfsConfig.port +
+        hdfsConfig.folder() + file.getName.replace(".csv", ".parquet"))
   }
 
 }

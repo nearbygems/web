@@ -4,7 +4,7 @@ import kz.greetgo.conf.hot.DefaultIntValue;
 import kz.greetgo.conf.hot.DefaultStrValue;
 import kz.greetgo.conf.hot.Description;
 
-@Description("Параметры базы данных")
+@Description("Параметры postgresql")
 public interface PostgresConfig {
 
   @Description("Хост")

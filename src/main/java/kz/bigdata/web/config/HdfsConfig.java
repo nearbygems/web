@@ -4,15 +4,19 @@ import kz.greetgo.conf.hot.DefaultIntValue;
 import kz.greetgo.conf.hot.DefaultStrValue;
 import kz.greetgo.conf.hot.Description;
 
-@Description("Параметры mongo")
-public interface MongoConfig {
+@Description("Параметры базы данных")
+public interface HdfsConfig {
 
   @Description("Хост")
-  @DefaultStrValue("mongo")
+  @DefaultStrValue("hadoop")
   String host();
 
   @Description("Порт")
-  @DefaultIntValue(27017)
+  @DefaultIntValue(9000)
   int port();
+
+  @Description("Хост")
+  @DefaultStrValue("/tmp/bergen/")
+  String folder();
 
 }

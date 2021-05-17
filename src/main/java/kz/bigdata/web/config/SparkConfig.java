@@ -4,15 +4,15 @@ import kz.greetgo.conf.hot.DefaultIntValue;
 import kz.greetgo.conf.hot.DefaultStrValue;
 import kz.greetgo.conf.hot.Description;
 
-@Description("Параметры mongo")
-public interface MongoConfig {
+@Description("Параметры базы данных")
+public interface SparkConfig {
 
   @Description("Хост")
-  @DefaultStrValue("mongo")
+  @DefaultStrValue("spark-master")
   String host();
 
   @Description("Порт")
-  @DefaultIntValue(27017)
+  @DefaultIntValue(7077)
   int port();
 
 }
