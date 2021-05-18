@@ -1,11 +1,11 @@
-package kz.bigdata.web.scrapper;
+package kz.bigdata.web.scraper;
 
 import kz.bigdata.web.config.AppConfig;
 import kz.bigdata.web.model.mongo.SmartphoneDto;
 import kz.bigdata.web.producer.Producer;
 import kz.bigdata.web.util.App;
 import kz.bigdata.web.util.Ids;
-import kz.bigdata.web.util.ScrapperUtil;
+import kz.bigdata.web.util.ScraperUtil;
 import lombok.SneakyThrows;
 import org.jsoup.Jsoup;
 import org.slf4j.Logger;
@@ -19,9 +19,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Component
-public class WebScrapper {
+public class WebScraper {
 
-  Logger logger = LoggerFactory.getLogger(WebScrapper.class);
+  Logger logger = LoggerFactory.getLogger(WebScraper.class);
 
   // region Autowired fields
   @Autowired
@@ -41,9 +41,9 @@ public class WebScrapper {
       .get()
       .body();
 
-    var pagesUrl = ScrapperUtil.pagesUrl(body);
+    var pagesUrl = ScraperUtil.pagesUrl(body);
 
-    var pagesCount = ScrapperUtil.pagesCount(body);
+    var pagesCount = ScraperUtil.pagesCount(body);
 
     for (var i = 0; i < pagesCount; i++) {
       var url = appConfig.websiteToParse() + pagesUrl.replaceAll("#", "/page" + i + "#");
@@ -107,11 +107,11 @@ public class WebScrapper {
 
     var ret = new SmartphoneDto();
     ret.id = Ids.generate();
-    ret.title = ScrapperUtil.getTitle(body);
-    ret.price = ScrapperUtil.getPrice(body);
-    ret.seller = ScrapperUtil.getSeller(body);
-    ret.ram = ScrapperUtil.getRam(info);
-    ret.memory = ScrapperUtil.getMemory(info);
+    ret.title = ScraperUtil.getTitle(body);
+    ret.price = ScraperUtil.getPrice(body);
+    ret.seller = ScraperUtil.getSeller(body);
+    ret.ram = ScraperUtil.getRam(info);
+    ret.memory = ScraperUtil.getMemory(info);
 
     return ret;
 

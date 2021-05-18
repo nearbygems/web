@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
-public class ScrapperUtil {
+public class ScraperUtil {
 
-  private static Logger logger = LoggerFactory.getLogger(ScrapperUtil.class);
+  private static Logger logger = LoggerFactory.getLogger(ScraperUtil.class);
 
   public static String getTitle(Element body) {
     var iterator = body.getElementsByClass("title").stream().iterator();
@@ -82,7 +82,7 @@ public class ScrapperUtil {
         .filter(Element.class::isInstance)
         .map(Element.class::cast)
         .map(link -> link.val("a").text())
-        .filter(ScrapperUtil::isNumeric)
+        .filter(ScraperUtil::isNumeric)
         .map(Integer::parseInt)
         .max(Comparator.comparingInt(Integer::intValue))
         .orElse(0);

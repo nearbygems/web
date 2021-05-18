@@ -1,7 +1,7 @@
 package kz.bigdata.web.sheduler;
 
 import kz.bigdata.web.config.AppConfig;
-import kz.bigdata.web.scrapper.WebScrapper;
+import kz.bigdata.web.scraper.WebScraper;
 import kz.bigdata.web.util.App;
 import kz.greetgo.scheduling.Scheduled;
 import lombok.SneakyThrows;
@@ -14,11 +14,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 @Component
-public class ScrapperScheduler {
+public class ScraperScheduler {
 
   // region Autowired fields
   @Autowired
-  private WebScrapper webScrapper;
+  private WebScraper webScraper;
 
   @Autowired
   private AppConfig appConfig;
@@ -27,7 +27,7 @@ public class ScrapperScheduler {
   @SneakyThrows
   @Scheduled("01:00")
   public void parseWebSites() {
-    webScrapper.parseWebSites();
+    webScraper.parseWebSites();
   }
 
   @SneakyThrows
