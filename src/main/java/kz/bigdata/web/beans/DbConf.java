@@ -1,6 +1,6 @@
 package kz.bigdata.web.beans;
 
-import kz.bigdata.web.dao.BeanConfigDao;
+import kz.bigdata.web.dao.BeanConfDao;
 import liquibase.integration.spring.SpringLiquibase;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import javax.sql.DataSource;
 
 @Configuration
-@MapperScan(basePackageClasses = BeanConfigDao.class)
-public class DbConfiguration {
+@MapperScan(basePackageClasses = BeanConfDao.class)
+public class DbConf {
 
   // region Autowired fields
   @Autowired

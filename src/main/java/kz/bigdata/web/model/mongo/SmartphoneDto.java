@@ -11,11 +11,11 @@ import org.bson.types.ObjectId;
 public class SmartphoneDto {
 
   public ObjectId id;
-  public String title;
-  public int price;
-  public String seller;
-  public String ram;
-  public String memory;
+  public String   title;
+  public int      price;
+  public String   seller;
+  public String   ram;
+  public String   memory;
 
   public static String header() {
     return Fields.title + ";" + Fields.price + ";" + Fields.seller + ";" + Fields.ram + ";" + Fields.memory;
@@ -35,11 +35,11 @@ public class SmartphoneDto {
 
     var ret = new SmartphoneDto();
 
-    ret.id = Ids.generate();
-    ret.title = values[0].trim();
-    ret.price = Integer.parseInt(values[1].trim());
+    ret.id     = Ids.generate();
+    ret.title  = values[0].trim();
+    ret.price  = Integer.parseInt(values[1].trim());
     ret.seller = values[2].trim();
-    ret.ram = values[3].trim();
+    ret.ram    = values[3].trim();
     ret.memory = values[4].trim();
 
     return ret;
@@ -47,10 +47,10 @@ public class SmartphoneDto {
 
   public Smartphone_v2 web() {
     var ret = new Smartphone_v2();
-    ret.title = title;
-    ret.price = price;
+    ret.title  = title;
+    ret.price  = price;
     ret.seller = seller;
-    ret.ram = ram;
+    ret.ram    = ram;
     ret.memory = memory;
     return ret;
   }

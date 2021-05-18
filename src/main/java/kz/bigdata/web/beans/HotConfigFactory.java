@@ -1,9 +1,9 @@
 package kz.bigdata.web.beans;
 
-import kz.bigdata.web.config.AppConfig;
-import kz.bigdata.web.config.MongoConfig;
-import kz.bigdata.web.config.PostgresConfig;
-import kz.bigdata.web.config.kafka.KafkaConfig;
+import kz.bigdata.web.config.AppConf;
+import kz.bigdata.web.config.MongoConf;
+import kz.bigdata.web.config.PostgresConf;
+import kz.bigdata.web.config.kafka.KafkaConf;
 import kz.bigdata.web.util.App;
 import kz.greetgo.conf.hot.FileConfigFactory;
 import org.springframework.context.annotation.Bean;
@@ -20,23 +20,23 @@ public class HotConfigFactory extends FileConfigFactory {
   }
 
   @Bean
-  public AppConfig appConfig() {
-    return createConfig(AppConfig.class);
+  public AppConf appConfig() {
+    return createConfig(AppConf.class);
   }
 
   @Bean
-  public PostgresConfig dbConfig() {
-    return createConfig(PostgresConfig.class);
+  public PostgresConf dbConfig() {
+    return createConfig(PostgresConf.class);
   }
 
   @Bean
-  public MongoConfig mongoConfig() {
-    return createConfig(MongoConfig.class);
+  public MongoConf mongoConfig() {
+    return createConfig(MongoConf.class);
   }
 
   @Bean
-  public KafkaConfig kafkaConfig() {
-    return createConfig(KafkaConfig.class);
+  public KafkaConf kafkaConfig() {
+    return createConfig(KafkaConf.class);
   }
 
 }

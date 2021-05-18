@@ -15,7 +15,7 @@ import java.nio.file.Files;
 @Component
 public class Producer {
 
-  Logger logger = LoggerFactory.getLogger(Producer.class);
+  private final Logger logger = LoggerFactory.getLogger(Producer.class);
 
   // region Autowired fields
   @Autowired

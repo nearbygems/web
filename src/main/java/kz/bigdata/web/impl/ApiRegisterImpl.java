@@ -5,7 +5,13 @@ import kz.bigdata.web.dao.model.LogDao;
 import kz.bigdata.web.dao.model.SmartphoneDao;
 import kz.bigdata.web.dao.model.Smartphone_v2_Dao;
 import kz.bigdata.web.model.mongo.SmartphoneDto;
-import kz.bigdata.web.model.web.*;
+import kz.bigdata.web.model.web.Borrower;
+import kz.bigdata.web.model.web.Client;
+import kz.bigdata.web.model.web.ReasonType;
+import kz.bigdata.web.model.web.Rejection;
+import kz.bigdata.web.model.web.Result;
+import kz.bigdata.web.model.web.Smartphone;
+import kz.bigdata.web.model.web.Smartphone_v2;
 import kz.bigdata.web.register.ApiRegister;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +27,7 @@ import java.util.stream.Collectors;
 @Component
 public class ApiRegisterImpl implements ApiRegister {
 
-  Logger logger = LoggerFactory.getLogger(ApiRegister.class);
+  private final Logger logger = LoggerFactory.getLogger(ApiRegister.class);
 
   // region Autowired fields
   @Autowired
@@ -61,7 +67,7 @@ public class ApiRegisterImpl implements ApiRegister {
     }
 
     var payment = BigDecimal.valueOf(smartPhonePrice)
-      .divide(BigDecimal.valueOf(12), 2, RoundingMode.HALF_UP);
+                            .divide(BigDecimal.valueOf(12), 2, RoundingMode.HALF_UP);
 
     if (payment.compareTo(BigDecimal.valueOf(client.income).multiply(BigDecimal.valueOf(0.2))) >= 0) {
       logger.info("w85Xx0WF3f :: client income =`" + client.income + "` is too low");
@@ -103,8 +109,8 @@ public class ApiRegisterImpl implements ApiRegister {
   @Override
   public List<Smartphone_v2> getSmartphones_v2() {
     var smartphones = smartphoneV2Dao.load().stream()
-      .map(SmartphoneDto::web)
-      .collect(Collectors.toUnmodifiableList());
+                                     .map(SmartphoneDto::web)
+                                     .collect(Collectors.toUnmodifiableList());
     logger.info("L4GGAR26G6 :: get smartphones = `" + smartphones.toString() + "`");
     return smartphones;
   }

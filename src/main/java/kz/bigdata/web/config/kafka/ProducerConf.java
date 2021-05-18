@@ -14,11 +14,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class ProducerConfiguration {
+public class ProducerConf {
 
   // region Autowired fields
   @Autowired
-  private KafkaConfig kafkaConfig;
+  private KafkaConf kafkaConf;
   // endregion
 
   @Bean
@@ -29,7 +29,7 @@ public class ProducerConfiguration {
   @Bean
   public Map<String, Object> producerConfigurations() {
     var configurations = new HashMap<String, Object>();
-    configurations.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaConfig.host() + ":" + kafkaConfig.port());
+    configurations.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaConf.host() + ":" + kafkaConf.port());
     configurations.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
     configurations.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class);
     return configurations;

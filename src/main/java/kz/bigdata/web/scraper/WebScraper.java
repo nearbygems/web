@@ -1,6 +1,6 @@
 package kz.bigdata.web.scraper;
 
-import kz.bigdata.web.config.AppConfig;
+import kz.bigdata.web.config.AppConf;
 import kz.bigdata.web.model.mongo.SmartphoneDto;
 import kz.bigdata.web.producer.Producer;
 import kz.bigdata.web.util.App;
@@ -21,11 +21,11 @@ import java.util.ArrayList;
 @Component
 public class WebScraper {
 
-  Logger logger = LoggerFactory.getLogger(WebScraper.class);
+  private final Logger logger = LoggerFactory.getLogger(WebScraper.class);
 
   // region Autowired fields
   @Autowired
-  private AppConfig appConfig;
+  private AppConf appConf;
 
   @Autowired
   private Producer producer;
@@ -34,19 +34,19 @@ public class WebScraper {
   @SneakyThrows
   public void parseWebSites() {
 
-    logger.info("X479SRJbXe :: started parsing website = `" + appConfig.urlToParse() + "`");
+    logger.info("X479SRJbXe :: started parsing website = `" + appConf.urlToParse() + "`");
 
-    var body = Jsoup.connect(appConfig.urlToParse())
-      .timeout(1000000)
-      .get()
-      .body();
+    var body = Jsoup.connect(appConf.urlToParse())
+                    .timeout(1000000)
+                    .get()
+                    .body();
 
     var pagesUrl = ScraperUtil.pagesUrl(body);
 
     var pagesCount = ScraperUtil.pagesCount(body);
 
     for (var i = 0; i < pagesCount; i++) {
-      var url = appConfig.websiteToParse() + pagesUrl.replaceAll("#", "/page" + i + "#");
+      var url = appConf.websiteToParse() + pagesUrl.replaceAll("#", "/page" + i + "#");
       logger.info("0N25zt0qMu :: started parsing page = `" + url + "`");
       parsePage(url);
     }
@@ -78,16 +78,16 @@ public class WebScraper {
 
     }
 
-    var csv = new File(App.dir() + appConfig.smartphonesCsvDir() + "smartphones_" + LocalDateTime.now() + ".csv");
+    var csv = new File(App.dir() + appConf.smartphonesCsvDir() + "smartphones_" + LocalDateTime.now() + ".csv");
 
     logger.info("9w8cw52dfh :: started creating csv = `" + csv.getName() + "`");
 
     try (var writer = new PrintWriter(csv)) {
       writer.println(SmartphoneDto.header());
       smartphones.stream()
-        .map(SmartphoneDto::toCsvRow)
-        .peek(producer::sendToSmartphones)
-        .forEach(writer::println);
+                 .map(SmartphoneDto::toCsvRow)
+                 .peek(producer::sendToSmartphones)
+                 .forEach(writer::println);
     }
 
     logger.info("22ttRr2c55 :: page parsed with total smartphones count = `" + smartphones.size() + "`");
@@ -106,13 +106,12 @@ public class WebScraper {
     var info = body.getElementById("additional-info");
 
     var ret = new SmartphoneDto();
-    ret.id = Ids.generate();
-    ret.title = ScraperUtil.getTitle(body);
-    ret.price = ScraperUtil.getPrice(body);
+    ret.id     = Ids.generate();
+    ret.title  = ScraperUtil.getTitle(body);
+    ret.price  = ScraperUtil.getPrice(body);
     ret.seller = ScraperUtil.getSeller(body);
-    ret.ram = ScraperUtil.getRam(info);
+    ret.ram    = ScraperUtil.getRam(info);
     ret.memory = ScraperUtil.getMemory(info);
-
     return ret;
 
   }

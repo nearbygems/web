@@ -10,11 +10,11 @@ import java.util.stream.Stream;
 @ToString
 public class Smartphone {
 
-  public int id;
+  public int    id;
   public String title;
   public String brand;
   public String model;
-  public int price;
+  public int    price;
 
   public static Smartphone from(SmartphoneDto smartphoneDto) {
     var ret = new Smartphone();

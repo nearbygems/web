@@ -7,10 +7,10 @@ import java.time.LocalDateTime;
 @ToString
 public class Client {
 
-  public String ctn;
-  public String iin;
-  public int smartphoneId;
-  public int income;
+  public String        ctn;
+  public String        iin;
+  public int           smartphoneId;
+  public int           income;
   public LocalDateTime createdAt;
 
 }

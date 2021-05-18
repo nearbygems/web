@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 @FieldNameConstants
 public class BorrowerDto {
 
-  public ObjectId id;
-  public String ctn;
+  public ObjectId      id;
+  public String        ctn;
   public LocalDateTime eventTime;
 
   public static BorrowerDto valueFromCsvRow(String row) {
@@ -25,7 +25,7 @@ public class BorrowerDto {
     }
 
     var ret = new BorrowerDto();
-    ret.ctn = values[1].trim();
+    ret.ctn       = values[1].trim();
     ret.eventTime = LocalDateTime.parse(values[2].trim(), DateUtil.dateFormat());
 
     return ret;
@@ -33,7 +33,7 @@ public class BorrowerDto {
 
   public Borrower web() {
     var ret = new Borrower();
-    ret.ctn = ctn;
+    ret.ctn       = ctn;
     ret.eventTime = eventTime;
     return ret;
   }

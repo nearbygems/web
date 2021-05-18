@@ -1,6 +1,6 @@
 package kz.bigdata.web.impl;
 
-import kz.bigdata.web.config.AppConfig;
+import kz.bigdata.web.config.AppConf;
 import kz.bigdata.web.model.parse_bin.BinaryLine;
 import kz.bigdata.web.model.parse_bin.BlackListRow;
 import kz.bigdata.web.producer.Producer;
@@ -24,21 +24,21 @@ import java.util.Objects;
 @Component
 public class BlackListRegisterImpl implements BlackListRegister {
 
-  Logger logger = LoggerFactory.getLogger(BlackListRegister.class);
+  private final Logger logger = LoggerFactory.getLogger(BlackListRegister.class);
 
   // region Autowired fields
   @Autowired
   private Producer producer;
 
   @Autowired
-  private AppConfig appConfig;
+  private AppConf appConf;
   // endregion
 
   @Override
   @SneakyThrows
   public void parseBinaryFiles() {
 
-    var folder = new File(App.dir() + appConfig.binNewDir());
+    var folder = new File(App.dir() + appConf.binNewDir());
 
     logger.info("f527jp0JBr :: started parsing files in the folder = `" + folder.getName() + "`");
 
@@ -69,13 +69,13 @@ public class BlackListRegisterImpl implements BlackListRegister {
         try (var writer = new PrintWriter(csv)) {
           writer.println(BlackListRow.header());
           rows.stream()
-            .map(BlackListRow::toCsvRow)
-            .forEach(writer::println);
+              .map(BlackListRow::toCsvRow)
+              .forEach(writer::println);
         }
 
         sendMessagesToKafka(csv.getPath());
 
-        file.renameTo(new File(App.dir() + appConfig.binNewDir() + file.getName().replace(".bin", "_migrated.bin")));
+        file.renameTo(new File(App.dir() + appConf.binNewDir() + file.getName().replace(".bin", "_migrated.bin")));
 
         producer.sendToBlackList(csv);
 
@@ -97,7 +97,7 @@ public class BlackListRegisterImpl implements BlackListRegister {
   }
 
   private String csvName(String fileName) {
-    return App.dir() + appConfig.binMigratedDir() + fileName.replace(".bin", "_migrated_" + LocalDateTime.now() + ".csv");
+    return App.dir() + appConf.binMigratedDir() + fileName.replace(".bin", "_migrated_" + LocalDateTime.now() + ".csv");
   }
 
 }

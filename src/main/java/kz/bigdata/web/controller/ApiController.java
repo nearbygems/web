@@ -1,9 +1,17 @@
 package kz.bigdata.web.controller;
 
-import kz.bigdata.web.model.web.*;
+import kz.bigdata.web.model.web.Borrower;
+import kz.bigdata.web.model.web.Client;
+import kz.bigdata.web.model.web.Result;
+import kz.bigdata.web.model.web.Smartphone;
+import kz.bigdata.web.model.web.Smartphone_v2;
 import kz.bigdata.web.register.ApiRegister;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 

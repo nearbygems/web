@@ -16,13 +16,13 @@ public class MongoAccess implements InitializingBean {
   // endregion
 
   private MongoCollection<SmartphoneDto> smartphones;
-  private MongoCollection<BorrowerDto> blacklist;
+  private MongoCollection<BorrowerDto>   blacklist;
 
   @Override
   public void afterPropertiesSet() {
 
     smartphones = getCollection(SmartphoneDto.class);
-    blacklist = getCollection(BorrowerDto.class);
+    blacklist   = getCollection(BorrowerDto.class);
 
   }
 

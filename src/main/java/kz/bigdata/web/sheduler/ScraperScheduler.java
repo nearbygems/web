@@ -1,8 +1,9 @@
 package kz.bigdata.web.sheduler;
 
-import kz.bigdata.web.config.AppConfig;
+import kz.bigdata.web.config.AppConf;
 import kz.bigdata.web.scraper.WebScraper;
 import kz.bigdata.web.util.App;
+import kz.greetgo.scheduling.HasScheduled;
 import kz.greetgo.scheduling.Scheduled;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +15,14 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 @Component
-public class ScraperScheduler {
+public class ScraperScheduler implements HasScheduled {
 
   // region Autowired fields
   @Autowired
   private WebScraper webScraper;
 
   @Autowired
-  private AppConfig appConfig;
+  private AppConf appConf;
   // endregion
 
   @SneakyThrows
@@ -34,17 +35,17 @@ public class ScraperScheduler {
   @PostConstruct
   private void checkDirectory() {
 
-    var binNewDir = new File(App.dir() + appConfig.binNewDir());
-    var blacklistCsvDir = new File(App.dir() + appConfig.blacklistCsvDir());
-    var binMigratedDir = new File(App.dir() + appConfig.binMigratedDir());
+    var binNewDir       = new File(App.dir() + appConf.binNewDir());
+    var blacklistCsvDir = new File(App.dir() + appConf.blacklistCsvDir());
+    var binMigratedDir  = new File(App.dir() + appConf.binMigratedDir());
 
-    var smartphonesCsvDir = new File(App.dir() + appConfig.smartphonesCsvDir());
+    var smartphonesCsvDir = new File(App.dir() + appConf.smartphonesCsvDir());
 
     if (!binNewDir.exists()) {
       if (binNewDir.mkdirs()) {
         Files.copy(
           Paths.get("src/main/resources/data.bin"),
-          Paths.get(App.dir() + appConfig.binNewDir() + "data.bin")
+          Paths.get(App.dir() + appConf.binNewDir() + "data.bin")
         );
       }
     }
@@ -60,7 +61,6 @@ public class ScraperScheduler {
     if (!smartphonesCsvDir.exists()) {
       smartphonesCsvDir.mkdirs();
     }
-
 
   }
 

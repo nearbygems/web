@@ -1,17 +1,18 @@
-package kz.bigdata.web.config.kafka;
+package kz.bigdata.web.config;
 
 import kz.greetgo.conf.hot.DefaultIntValue;
 import kz.greetgo.conf.hot.DefaultStrValue;
 import kz.greetgo.conf.hot.Description;
 
-public interface KafkaConfig {
+@Description("Параметры spark")
+public interface SparkConf {
 
   @Description("Хост")
-  @DefaultStrValue("kafka")
+  @DefaultStrValue("spark-master")
   String host();
 
   @Description("Порт")
-  @DefaultIntValue(9092)
+  @DefaultIntValue(7077)
   int port();
 
 }

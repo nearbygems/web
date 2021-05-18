@@ -38,7 +38,7 @@ public class Ids {
   public static @NotNull ObjectId toObjectId(@NotNull String strId) {
     try {
       String base64str = strId_to_base64(strId);
-      byte[] bytes = Base64.getDecoder().decode(base64str);
+      byte[] bytes     = Base64.getDecoder().decode(base64str);
       return new ObjectId(bytes);
     } catch (IllegalArgumentException e) {
       throw new RuntimeException("ky9ace5ud7 :: strId = `" + strId + '`');

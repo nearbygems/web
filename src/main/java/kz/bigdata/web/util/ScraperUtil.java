@@ -79,13 +79,13 @@ public class ScraperUtil {
     if (iterator.hasNext()) {
       var links = iterator.next().getElementsByAttribute("href").toArray();
       return Stream.of(links)
-        .filter(Element.class::isInstance)
-        .map(Element.class::cast)
-        .map(link -> link.val("a").text())
-        .filter(ScraperUtil::isNumeric)
-        .map(Integer::parseInt)
-        .max(Comparator.comparingInt(Integer::intValue))
-        .orElse(0);
+                   .filter(Element.class::isInstance)
+                   .map(Element.class::cast)
+                   .map(link -> link.val("a").text())
+                   .filter(ScraperUtil::isNumeric)
+                   .map(Integer::parseInt)
+                   .max(Comparator.comparingInt(Integer::intValue))
+                   .orElse(0);
     }
     throw new RuntimeException("6F910WUh9L :: Web site has not pagination");
   }

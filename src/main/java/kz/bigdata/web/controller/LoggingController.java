@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LoggingController {
 
-  Logger logger = LoggerFactory.getLogger(LoggingController.class);
+  private final Logger logger = LoggerFactory.getLogger(LoggingController.class);
 
   @RequestMapping("/log")
   public String index() {

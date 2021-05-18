@@ -1,12 +1,13 @@
 package kz.bigdata.web.sheduler;
 
 import kz.bigdata.web.register.BlackListRegister;
+import kz.greetgo.scheduling.HasScheduled;
 import kz.greetgo.scheduling.Scheduled;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BlackListScheduler {
+public class BlackListScheduler implements HasScheduled {
 
   // region Autowired fields
   @Autowired

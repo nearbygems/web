@@ -3,7 +3,7 @@ package kz.bigdata.web.mongo;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.client.MongoDatabase;
-import kz.bigdata.web.config.MongoConfig;
+import kz.bigdata.web.config.MongoConf;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class MongoConnection implements InitializingBean {
 
   // region Autowired fields
   @Autowired
-  private MongoConfig mongoConfig;
+  private MongoConf mongoConf;
   // endregion
 
   private MongoDatabase database;
@@ -36,7 +36,7 @@ public class MongoConnection implements InitializingBean {
       .codecRegistry(fromRegistries(MongoClient.getDefaultCodecRegistry(), fromProviders(pojoCodecProvider)))
       .build();
 
-    var mongoClient = new MongoClient(mongoConfig.host() + ":" + mongoConfig.port(), mongoClientOptions);
+    var mongoClient = new MongoClient(mongoConf.host() + ":" + mongoConf.port(), mongoClientOptions);
 
     database = mongoClient.getDatabase("web");
   }

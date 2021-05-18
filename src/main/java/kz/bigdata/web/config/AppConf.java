@@ -4,7 +4,7 @@ import kz.greetgo.conf.hot.DefaultStrValue;
 import kz.greetgo.conf.hot.Description;
 
 @Description("Параметры приложения")
-public interface AppConfig {
+public interface AppConf {
 
   @Description("Директория для бинарных файлов")
   @DefaultStrValue("/blacklist/new/")

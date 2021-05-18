@@ -6,7 +6,7 @@ import lombok.ToString;
 public class Smartphone_v2 {
 
   public String title;
-  public int price;
+  public int    price;
   public String seller;
   public String ram;
   public String memory;

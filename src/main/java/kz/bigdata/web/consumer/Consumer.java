@@ -1,6 +1,6 @@
 package kz.bigdata.web.consumer;
 
-import kz.bigdata.web.config.AppConfig;
+import kz.bigdata.web.config.AppConf;
 import kz.bigdata.web.producer.Producer;
 import kz.bigdata.web.register.KafkaRegister;
 import kz.bigdata.web.register.SparkRegister;
@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @Component
 public class Consumer {
 
-  Logger logger = LoggerFactory.getLogger(Producer.class);
+  private final Logger logger = LoggerFactory.getLogger(Producer.class);
 
   // region Autowired fields
   @Autowired
@@ -31,7 +31,7 @@ public class Consumer {
   private KafkaRegister kafkaRegister;
 
   @Autowired
-  private AppConfig appConfig;
+  private AppConf appConf;
   // endregion
 
   @KafkaListener(topics = KafkaTopic.BLACKLIST, groupId = KafkaUtil.GROUP_ID)
@@ -48,7 +48,7 @@ public class Consumer {
   @SneakyThrows
   @KafkaListener(topics = KafkaTopic.BLACKLIST_CSV, groupId = KafkaUtil.GROUP_ID)
   public void listenBlackListCsv(byte[] message) {
-    var fileName = App.dir() + appConfig.blacklistCsvDir() + "data_" + LocalDateTime.now() + ".csv";
+    var fileName = App.dir() + appConf.blacklistCsvDir() + "data_" + LocalDateTime.now() + ".csv";
     try (var fos = new FileOutputStream(fileName)) {
       fos.write(message);
       logger.info("T97T7s6dGK :: `" + fileName + "` saved in filestorage");

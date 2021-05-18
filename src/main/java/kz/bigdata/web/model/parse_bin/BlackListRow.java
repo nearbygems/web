@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 @FieldNameConstants
 public class BlackListRow {
 
-  public int order;
-  public String phone;
+  public int           order;
+  public String        phone;
   public LocalDateTime eventTime;
 
   public static String header() {

@@ -28,14 +28,14 @@ public class SparkFakeRegisterImpl implements SparkRegister {
     try (var stream = Files.lines(Paths.get(csv))) {
 
       var smartphones = stream.skip(1)
-        .map(SmartphoneDto::valueFromCsvRow)
-        .filter(Objects::nonNull)
-        .map(Smartphone::from)
-        .collect(Collectors.groupingBy(smartphone -> smartphone.title));
+                              .map(SmartphoneDto::valueFromCsvRow)
+                              .filter(Objects::nonNull)
+                              .map(Smartphone::from)
+                              .collect(Collectors.groupingBy(smartphone -> smartphone.title));
 
       smartphones.values().stream()
-        .map(Smartphone::average)
-        .forEach(smartphoneDao::save);
+                 .map(Smartphone::average)
+                 .forEach(smartphoneDao::save);
 
     }
 

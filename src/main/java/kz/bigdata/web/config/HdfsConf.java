@@ -4,8 +4,8 @@ import kz.greetgo.conf.hot.DefaultIntValue;
 import kz.greetgo.conf.hot.DefaultStrValue;
 import kz.greetgo.conf.hot.Description;
 
-@Description("Параметры базы данных")
-public interface HdfsConfig {
+@Description("Параметры hdfs")
+public interface HdfsConf {
 
   @Description("Хост")
   @DefaultStrValue("hadoop")

@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 @ToString
 public class Borrower {
 
-  public String ctn;
+  public String        ctn;
   public LocalDateTime eventTime;
 
 }

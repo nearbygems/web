@@ -1,6 +1,6 @@
 package kz.bigdata.spark
 
-import kz.bigdata.web.config.{HdfsConfig, PostgresConfig, SparkConfig}
+import kz.bigdata.web.config.{HdfsConf, PostgresConf, SparkConf}
 import kz.bigdata.web.register.SparkRegister
 import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
 import org.apache.spark.sql.{Row, SaveMode, SparkSession}
@@ -13,9 +13,9 @@ import java.io.File
 class SparkRegisterImpl extends SparkRegister {
 
   // region Autowired fields
-  @Autowired val postgresConfig: PostgresConfig = null
-  @Autowired val sparkConfig: SparkConfig = null
-  @Autowired val hdfsConfig: HdfsConfig = null
+  @Autowired val postgresConfig: PostgresConf = null
+  @Autowired val sparkConfig: SparkConf = null
+  @Autowired val hdfsConfig: HdfsConf = null
   // endregion
 
   def getBrandAndModel(row: Row): Row = {
@@ -68,14 +68,14 @@ class SparkRegisterImpl extends SparkRegister {
     val url = "jdbc:postgresql://" +
       postgresConfig.host + ":" +
       postgresConfig.port + "/" +
-      postgresConfig.dbName
+      postgresConfig.name
 
     result.write
       .mode(SaveMode.Append)
       .format("jdbc")
       .option("user", postgresConfig.username)
       .option("password", postgresConfig.password)
-      .option("dbname", postgresConfig.dbName)
+      .option("dbname", postgresConfig.name)
       .option("dbtable", "smartphones")
       .option("driver", postgresConfig.driver)
       .option("url", url)

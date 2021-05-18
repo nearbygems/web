@@ -15,11 +15,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class ConsumerConfiguration {
+public class ConsumerConf {
 
   // region Autowired fields
   @Autowired
-  private KafkaConfig kafkaConfig;
+  private KafkaConf kafkaConf;
   // endregion
 
   @Bean
@@ -30,7 +30,7 @@ public class ConsumerConfiguration {
   @Bean
   public Map<String, Object> consumerConfigurations() {
     var configurations = new HashMap<String, Object>();
-    configurations.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaConfig.host() + ":" + kafkaConfig.port());
+    configurations.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaConf.host() + ":" + kafkaConf.port());
     configurations.put(ConsumerConfig.GROUP_ID_CONFIG, KafkaUtil.GROUP_ID);
     configurations.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
     configurations.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class);

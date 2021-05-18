@@ -5,7 +5,7 @@ import kz.greetgo.conf.hot.DefaultStrValue;
 import kz.greetgo.conf.hot.Description;
 
 @Description("Параметры postgresql")
-public interface PostgresConfig {
+public interface PostgresConf {
 
   @Description("Хост")
   @DefaultStrValue("postgres")
@@ -21,7 +21,7 @@ public interface PostgresConfig {
 
   @Description("Наименование БД")
   @DefaultStrValue("web")
-  String dbName();
+  String name();
 
   @Description("Наименование пользователя")
   @DefaultStrValue("bergen")

@@ -1,6 +1,10 @@
 package kz.bigdata.web.register;
 
-import kz.bigdata.web.model.web.*;
+import kz.bigdata.web.model.web.Borrower;
+import kz.bigdata.web.model.web.Client;
+import kz.bigdata.web.model.web.Result;
+import kz.bigdata.web.model.web.Smartphone;
+import kz.bigdata.web.model.web.Smartphone_v2;
 
 import java.util.List;
 
