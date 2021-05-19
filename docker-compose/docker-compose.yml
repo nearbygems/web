@@ -21,7 +21,7 @@ services:
       - ./postgres-init:/docker-entrypoint-initdb.d
 
   mongo:
-    image: mongo:4.2.0
+    image: mongo:4.4.0
     container_name: mongo-web
     restart: always
     ports:
